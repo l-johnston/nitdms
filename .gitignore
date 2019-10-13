@@ -1,0 +1,7 @@
+__pycache__/
+.pytest_cache/
+.vscode/
+build/
+dist/
+nitdms.egg-info/
+venv/
