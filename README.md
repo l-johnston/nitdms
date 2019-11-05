@@ -6,12 +6,15 @@ objects and respective properties. These objects and properties are dynamically
 instantiated as attributes allowing easy access from within an interactive session
 with tab completion such as Jupyter or bash.
 
-Channel data is returned as a list rather than Numpy array to avoid dependencies.
+Channel data is returned as a numpy ndarray or WaveformDT if data in the file is from
+LabVIEW's waveform data type. WaveformDT is a subclass of ndarray that mimics
+the waveform data type.
 Timestamps are datetime objects in UTC timezone.
 
 ## Installing
+After cloning repo:
 ```bash
-$ pip install nitdms
+$ pip install .
 ```
 
 ## Usage
@@ -84,3 +87,42 @@ arbitrary and have no general, direct mapping to a DataFrame. For example, the
 tdms file channel data is interpreted by the properties, but the DataFrame columns,
 which are Pandas Series objects, don't support metadata. In some situations a DataFrame
 is appropriate, but in general it isn't.
+
+If the channel data in the TDMS file originated from LabVIEW's waveform data type,
+the returned data will be a WaveformDT that is a subclass of numpy ndarray. This
+mimics the waveform data type in LabVIEW. In addition to all of the attributes
+such as t0 and dt, WaveformDT provides a convenience function to_xy() that
+facilitates plotting data in matplotlib. For example:
+
+```python
+>>> import matplotlib.pyplot as plt
+>>> from nitdms import TdmsFile
+>>> tf = TdmsFile(<file>)
+>>> data = tf.<group>.<channel>.data
+>>> data.t0
+datetime.datetime(...)
+>>> data.dt
+<value>
+>>> x, y = data.to_xy()
+>>> fig, ax = plt.subplots()
+>>> ax.plot(x, y)
+>>> plt.show()
+```
+
+By default, to_xy() returns x-axis array as relative time. For absolute time x-axis,
+set the relative parameter to False. For example:
+
+```python
+>>> import matplotlib.pyplot as plt
+>>> from nitdms import TdmsFile
+>>> tf = TdmsFile(<file>)
+>>> data = tf.<group>.<channel>.data
+>>> data.t0
+datetime.datetime(...)
+>>> data.dt
+<value>
+>>> x, y = data.to_xy(relative=False)
+>>> fig, ax = plt.subplots()
+>>> ax.plot(x, y)
+>>> plt.show()
+```

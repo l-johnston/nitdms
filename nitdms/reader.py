@@ -439,3 +439,9 @@ class TdmsFile(TdmsObject):
                     lines.append(f"            {cp}")
                 lines.append("            data")
         return "\n".join(lines)
+
+
+# pylint: disable=invalid-name
+if __name__ == "__main__":
+    tf = TdmsFile("./tests/tdms_files/wdt_analog_multiplewrites.tdms")
+    print(tf)

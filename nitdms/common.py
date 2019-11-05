@@ -8,8 +8,10 @@ import struct
 from datetime import datetime, timedelta, timezone
 from enum import Enum, IntFlag
 from collections import namedtuple
+import numpy as np
 from nitdms.exceptions import DAQmxScaleTypeError
 from nitdms.daqmx_scalers import rtdscale
+from nitdms.waveformdatatype import WaveformDT
 
 LeadIn = namedtuple("LeadIn", ["toc", "segment_len", "metadata_len"])
 Segment = namedtuple(
@@ -207,14 +209,35 @@ class Channel(TdmsObject):
 
     @property
     def data(self):
-        """Channel data as list"""
+        """Return the channel data
+
+        (ndarray or WaveformDT)
+        """
         if self._data is None:
             self._data = self._get_data()
-        return self._data
+        data = self._data
+        if hasattr(self, "wf_start_time"):
+            attributes = {}
+            for k, v in self.__dict__.items():
+                if not k.startswith("_"):
+                    attributes[k] = v
+            wf_start_time = attributes.pop("wf_start_time", 0.0)
+            wf_increment = attributes.pop("wf_increment", 1.0)
+            wf = WaveformDT(data, wf_increment, wf_start_time)
+            wf.set_attributes(**attributes)
+            return wf
+        return data
 
     def _get_data(self):
         data = []
+        try:
+            n_values = self._segments[0].count
+        except IndexError:
+            n_values = 0
+        uniform = True
         for segment in self._segments:
+            if segment.count != n_values:
+                uniform = False
             if segment.dtype == TdsDataType.String:
                 for raw_start in segment.raw_start:
                     raw_size = segment.raw_size
@@ -346,6 +369,9 @@ class Channel(TdmsObject):
                     fmt = f"{segment.byte_order}{segment.count}{dtype_fmt}"
                     values = struct.unpack(fmt, buf)
                     data.extend(values)
+        data = np.asarray(data)
+        if uniform and data.size > n_values:
+            data = data.reshape(-1, n_values)
         return data
 
     def __repr__(self):
