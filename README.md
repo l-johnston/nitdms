@@ -12,9 +12,8 @@ the waveform data type.
 Timestamps are datetime objects in UTC timezone.
 
 ## Installing
-After cloning repo:
 ```bash
-$ pip install .
+$ pip install nitdms
 ```
 
 ## Usage
