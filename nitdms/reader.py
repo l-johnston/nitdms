@@ -160,8 +160,6 @@ class TdmsFile(TdmsObject):
         """Discover file, group and channel objects and properties"""
         self._ptr = 0
         for leadin in self._get_leadins():
-            if not (leadin.toc & KToC.NewObjectList or leadin.toc & KToC.MetaData):
-                continue
             raw_data_size = leadin.segment_len - leadin.metadata_len
             raw_data_start = self._ptr + leadin.metadata_len
             ch_data_start = raw_data_start
@@ -194,12 +192,6 @@ class TdmsFile(TdmsObject):
                 else:
                     gr = path_parts[1]
                     ch = path_parts[2]
-                    if not hasattr(self, gr):
-                        self._create(group, Group(gr))
-                        self._info["groups"].append(gr)
-                        self._info["group_properties"][gr] = []
-                        self._info["group_channels"][gr] = []
-                        self._info["group_channel_properties"][gr] = {}
                     if not hasattr(self.__dict__[gr], ch):
                         self._get_attr(gr)._create(ch, Channel(ch))
                         self._get_attr(gr, ch)._buffer = self._buffer
@@ -232,10 +224,7 @@ class TdmsFile(TdmsObject):
                                 interleaved,
                             )
                             self._get_attr(gr, ch)._segments.append(seg)
-                            if interleaved:
-                                ch_data_start += rd_sz
-                            else:
-                                ch_data_start += count * rd_sz
+                            ch_data_start += rd_sz
                     elif index_type == 0x0000126A:
                         # digital data
                         self._ptr += 8
@@ -245,7 +234,6 @@ class TdmsFile(TdmsObject):
                         rdw_vector_size = self._unpack(TdsDataType.U32, byte_order)
                         rdw = self._unpack(TdsDataType.U32, byte_order)
                         self._ptr += (rdw_vector_size - 1) * 4
-                        # rd_sz = rdw // n_objects
                         rd_sz = rdw
                         rd_fmt = {1: "B", 2: "H", 4: "I"}[rd_sz]
                         dtype = TdsDataType.DAQmxRawData
@@ -262,52 +250,25 @@ class TdmsFile(TdmsObject):
                                 interleaved,
                             )
                             self._get_attr(gr, ch)._segments.append(seg)
-                            # if interleaved:
-                            #     ch_data_start += rd_sz
-                            # else:
-                            #     ch_data_start += count * rd_sz
                     elif index_type == 0:
                         last_seg = self._get_attr(gr, ch)._segments[-1]
-                        if last_seg.dtype == TdsDataType.String:
-                            raw_size = last_seg.raw_size
-                            count = last_seg.count
-                            raw_chunk_size = raw_size + 4 * count
-                            reps = len(last_seg.raw_start)
-                            raw_start = [
-                                raw_data_start + i * raw_chunk_size + 4 * count
-                                for i in range(reps)
-                            ]
-                            seg = Segment(
-                                raw_start,
-                                raw_size,
-                                raw_start,
-                                last_seg.rd_szfmt,
-                                last_seg.dtype,
-                                last_seg.offsets,
-                                count,
-                                last_seg.byte_order,
-                                last_seg.interleaved,
-                            )
+                        count = (raw_data_size // last_seg.raw_size) * last_seg.count
+                        dtype_size, _ = STRUCT_FORMAT[last_seg.dtype]
+                        seg = Segment(
+                            raw_data_start,
+                            raw_data_size,
+                            ch_data_start,
+                            last_seg.rd_szfmt,
+                            last_seg.dtype,
+                            last_seg.offsets,
+                            count,
+                            byte_order,
+                            interleaved,
+                        )
+                        if interleaved:
+                            ch_data_start += dtype_size
                         else:
-                            count = (
-                                raw_data_size // last_seg.raw_size
-                            ) * last_seg.count
-                            dtype_size, _ = STRUCT_FORMAT[last_seg.dtype]
-                            seg = Segment(
-                                raw_data_start,
-                                raw_data_size,
-                                ch_data_start,
-                                last_seg.rd_szfmt,
-                                last_seg.dtype,
-                                last_seg.offsets,
-                                count,
-                                byte_order,
-                                interleaved,
-                            )
-                            if interleaved:
-                                ch_data_start += dtype_size
-                            else:
-                                ch_data_start += count * dtype_size
+                            ch_data_start += count * dtype_size
                         self._get_attr(gr, ch)._segments.append(seg)
                     elif index_type == 0x00000014:
                         dtype = self._unpack(TdsDataType.U32, byte_order)
@@ -439,9 +400,3 @@ class TdmsFile(TdmsObject):
                     lines.append(f"            {cp}")
                 lines.append("            data")
         return "\n".join(lines)
-
-
-# pylint: disable=invalid-name
-if __name__ == "__main__":
-    tf = TdmsFile("./tests/tdms_files/wdt_analog_multiplewrites.tdms")
-    print(tf)

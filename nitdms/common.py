@@ -204,7 +204,7 @@ class Channel(TdmsObject):
         self._scales = {}
 
     def __iter__(self):
-        for sample in self._data:
+        for sample in self.data:
             yield sample
 
     @property

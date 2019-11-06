@@ -73,8 +73,6 @@ class WaveformDT(np.ndarray):
         y = y.flatten()
         dt = self.dt
         t0 = self.t0
-        if dt is None:
-            dt = 1.0
         samples = y.size
         if relative:
             t0 = t0 if isinstance(t0, Number) else 0.0
@@ -91,22 +89,31 @@ class WaveformDT(np.ndarray):
                 args.append(input_.view(np.ndarray))
             else:
                 args.append(input_)
+        outputs = kwargs.pop("out", None)
+        if outputs:
+            out_args = []
+            for output in outputs:
+                if isinstance(output, WaveformDT):
+                    out_args.append(output.view(np.ndarray))
+                else:
+                    out_args.append(output)
+            kwargs["out"] = tuple(out_args)
+        else:
+            outputs = (None,) * ufunc.nout
         # pylint: disable=no-member
         # pylint complains that __array_ufunc__ is not defined in np.ndarray, but it is
         results = super(WaveformDT, self).__array_ufunc__(
             ufunc, method, *args, **kwargs
+        )
+        if ufunc.nout == 1:
+            results = (results,)
+        results = tuple(
+            (np.asarray(result) if output is None else output)
+            for result, output in zip(results, outputs)
         )
         # pylint: enable=no-member
         if results is NotImplemented:
             return NotImplemented
         if method == "at":
             return None
-        if ufunc.nout == 1:
-            results = (results,)
         return results[0] if len(results) == 1 else results
-
-
-# pylint: disable=invalid-name
-if __name__ == "__main__":
-    wfm = WaveformDT([1, 2, 3], 1, 0)
-    print(wfm.__repr__())

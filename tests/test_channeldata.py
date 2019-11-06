@@ -178,3 +178,63 @@ def test_channeldata_digitalwfmpattern():
         values.append(value)
     assert values == list(range(8))
     assert group.wf_start_time == 0.0
+
+
+def test_channel_iter():
+    tf = TdmsFile("./tests/tdms_files/channeldata.tdms")
+    for expected, value in enumerate(tf.group_0.ch_0):
+        assert value == expected
+
+
+def test_channeldata_timestamp_interleaved():
+    tf = TdmsFile("./tests/tdms_files/channeldata_timestamp_interleaved.tdms")
+    seconds = [ts.second for ts in tf.group_0.ch_0.data]
+    assert seconds == list(range(0, 10, 2))
+    seconds = [ts.second for ts in tf.group_0.ch_1.data]
+    assert seconds == list(range(1, 10, 2))
+
+
+def test_channeldata_complexsingle_interleaved():
+    tf = TdmsFile("./tests/tdms_files/channeldata_complexsingle_interleaved.tdms")
+    ch_0_values = tf.group_0.ch_0.data
+    assert isinstance(ch_0_values[0], complex)
+    assert ch_0_values.size == 10
+    expecteds = map(lambda ri: complex(*ri), zip(range(10), range(19, 9, -1)))
+    for value, expected in zip(ch_0_values, expecteds):
+        assert value == expected
+    ch_1_values = tf.group_0.ch_1.data
+    assert isinstance(ch_1_values[0], complex)
+    assert ch_1_values.size == 10
+    expecteds = map(lambda ri: complex(*ri), zip(range(10, 20), range(9, -1, -1)))
+    for value, expected in zip(ch_1_values, expecteds):
+        assert value == expected
+
+
+def test_channeldata_2ch_complexsingle():
+    tf = TdmsFile("./tests/tdms_files/channeldata_2ch_complexsingle.tdms")
+    ch_0_values = tf.group_0.ch_0.data
+    assert isinstance(ch_0_values[0], complex)
+    assert ch_0_values.size == 10
+    expecteds = map(lambda ri: complex(*ri), zip(range(10), range(19, 9, -1)))
+    for value, expected in zip(ch_0_values, expecteds):
+        assert value == expected
+    ch_1_values = tf.group_0.ch_1.data
+    assert isinstance(ch_1_values[0], complex)
+    assert ch_1_values.size == 10
+    expecteds = map(lambda ri: complex(*ri), zip(range(10, 20), range(9, -1, -1)))
+    for value, expected in zip(ch_1_values, expecteds):
+        assert value == expected
+
+
+def test_channeldata_continued_interleaved():
+    tf = TdmsFile("./tests/tdms_files/channeldata_continued_interleaved.tdms")
+    ch_0_values = tf.group_0.ch_0.data
+    expected = np.asarray(range(0, 30))
+    results = ch_0_values == expected
+    assert results.all()
+    ch_1_values = tf.group_0.ch_1.data
+    expected = []
+    for i in range(3):
+        expected.extend([i * 10 + j for j in range(9, -1, -1)])
+    results = ch_1_values == np.asarray(expected)
+    assert results.all()

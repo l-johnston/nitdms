@@ -6,6 +6,7 @@ from nitdms import TdmsFile, WaveformDT
 # pylint: disable=missing-docstring
 # pylint: disable=pointless-statement
 # pylint: disable=no-member
+# pylint: disable=invalid-name
 def test_analog():
     tf = TdmsFile("./tests/tdms_files/wdt_analog.tdms")
     wf = tf.group_0.ch0.data
@@ -56,3 +57,44 @@ def test_extraattributes():
     tf = TdmsFile("./tests/tdms_files/wdt_analog.tdms")
     wf = tf.group_0.ch0.data
     assert wf.signal == "sine"
+
+
+def test_repr():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    assert wf.__repr__() == "WaveformDT([1, 2, 3], 1, 0)"
+
+
+def test_Y():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    results = wf.Y == np.asarray([1.0, 2.0, 3.0])
+    assert results.all()
+
+
+def test_ufunc():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    assert wf.min() == 1.0
+
+
+def test_ufunc_multiply():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    results = 2 * wf == np.asarray([2.0, 4.0, 6.0])
+    assert results.all()
+
+
+def test_ufunc_multiplyat():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    np.multiply.at(wf, [0, 1, 2], 2.0)
+    results = wf.Y == np.asarray([2.0, 4.0, 6.0])
+    assert results.all()
+
+
+def test_ufunc_out():
+    a = WaveformDT([1.0, 2.0, 3.0], 1, 0)
+    b = np.asarray([0.0] * 3)
+    c = WaveformDT([0.0] * 3, 2, 1)
+    np.multiply(a, 2.0, out=b)
+    results = b == np.asarray([2.0, 4.0, 6.0])
+    assert results.all()
+    np.multiply(a, 2.0, out=c)
+    results = c == WaveformDT([2.0, 4.0, 6.0], 2, 1)
+    assert results.all()
