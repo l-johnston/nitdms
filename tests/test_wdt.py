@@ -44,7 +44,7 @@ def test_toxy_absolute():
     tf = TdmsFile("./tests/tdms_files/wdt_absolutet0.tdms")
     wf = tf.group_0.ch0.data
     x = wf.to_xy(relative=False)[0]
-    assert wf.t0 == datetime(2019, 1, 1).astimezone(timezone.utc)
+    assert wf.t0 == datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc)
     t0 = np.datetime64(datetime(2019, 1, 1))
     samples = wf.size
     dt = np.timedelta64(np.uint32(wf.dt * 1e9), "ns")

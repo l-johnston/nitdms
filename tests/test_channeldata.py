@@ -135,33 +135,31 @@ def test_channeldata_timestamp():
     data = tf.group_0.ch_0.data
     assert isinstance(data[0], datetime)
     assert data.size == 10
-    expecteds = [
-        datetime(2019, 1, 1, 0, 0, s).astimezone(timezone.utc) for s in range(10)
-    ]
-    for value, expected in zip(data, expecteds):
-        assert value == expected
+    expected = [datetime(2019, 1, 1, 6, 0, s, tzinfo=timezone.utc) for s in range(10)]
+    results = data == expected
+    assert results.all()
 
 
 def test_channeldata_digitalwfm():
     tf = TdmsFile("./tests/tdms_files/channeldata_digitalwfm.tdms")
     data = tf.group_0.ch_0.data
     assert isinstance(data, WaveformDT)
-    assert isinstance(data[0], np.int32)
+    assert isinstance(data[0], (np.int32, np.int64))
     assert data.size == 10
-    expecteds = [0, 2, 3, 4, 5, 6, 7, 8, 9, 16]
-    for value, expected in zip(data, expecteds):
-        assert value == expected
+    expected = np.asarray([0, 2, 3, 4, 5, 6, 7, 8, 9, 16])
+    results = data == expected
+    assert results.all()
 
 
 def test_channeldata_digitalwfmstates():
     tf = TdmsFile("./tests/tdms_files/channeldata_digitalwfmstates.tdms")
     data = tf.group_0.ch_0.data
     assert isinstance(data, WaveformDT)
-    assert isinstance(data[0], np.int32)
+    assert isinstance(data[0], (np.int32, np.int64))
     assert data.size == 8
-    expecteds = list(range(8))
-    for value, expected in zip(data, expecteds):
-        assert value == expected
+    expected = np.asarray(list(range(8)))
+    results = data == expected
+    assert results.all()
 
 
 def test_channeldata_digitalwfmpattern():

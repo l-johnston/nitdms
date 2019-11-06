@@ -84,7 +84,7 @@ def test_boolean():
 def test_timestamp():
     value = TF.Timestamp
     assert isinstance(value, datetime)
-    assert value == datetime(2019, 1, 1).astimezone(timezone.utc)
+    assert value == datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc)
 
 
 def test_complexsingle():
