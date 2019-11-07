@@ -139,7 +139,6 @@ class TdmsFile(TdmsObject):
             ptr += 4
             value = struct.unpack(f"{size}s", buffer[ptr : ptr + size])[0].decode()
         elif dtype == TdsDataType.TimeStamp:
-            # LabVIEW's timestamp does not convey timezone info
             frac, sec = struct.unpack(byte_order + fmt, buffer[ptr : ptr + size])
             if frac == 0 and sec == 0:
                 # LabVIEW chose to make 0.0 mean 0.0 s relative, not absolute time

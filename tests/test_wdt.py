@@ -1,5 +1,5 @@
 """Test returning data as WaveformDT"""
-from datetime import datetime, timezone
+from datetime import datetime
 import numpy as np
 from nitdms import TdmsFile, WaveformDT
 
@@ -43,7 +43,12 @@ def test_toxy_relative():
 def test_toxy_absolute():
     tf = TdmsFile("./tests/tdms_files/wdt_absolutet0.tdms")
     wf = tf.group_0.ch0.data
-    assert wf.t0 == datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc)
+    assert wf.t0 == datetime(2019, 1, 1, 0, 0)
+    x, _ = wf.to_xy(False)
+    t0 = np.datetime64("2019-01-01T00:00")
+    expected = np.asarray([t0 + np.timedelta64(s, "s") for s in range(10)])
+    results = x == expected
+    assert results.all()
 
 
 def test_extraattributes():

@@ -1,5 +1,5 @@
 """Test DAQmx channel data"""
-from datetime import datetime, timezone
+from datetime import datetime
 import numpy as np
 from pytest import approx
 from nitdms import TdmsFile, WaveformDT
@@ -16,7 +16,7 @@ def test_daqmx_linear_voltage():
     assert data.size == 10
     assert data[:3] == approx((-0.000409137, -0.000727973, -9.0301e-5))
     t0 = data.t0
-    assert t0 == datetime(2019, 10, 3, 2, 31, 10, 787163, tzinfo=timezone.utc)
+    assert t0 == datetime(2019, 10, 2, 21, 31, 10, 787163)
     dt = data.dt
     assert dt == 0.001
 
@@ -27,7 +27,7 @@ def test_daqmx_polynomial_voltage():
     assert data.size == 10
     assert data[:3] == approx((3.648018064, 3.647857836, 3.647857836))
     t0 = data.t0
-    assert t0 == datetime(2019, 10, 3, 2, 44, 38, 544740, tzinfo=timezone.utc)
+    assert t0 == datetime(2019, 10, 2, 21, 44, 38, 544740)
     dt = data.dt
     assert dt == 0.001
 
