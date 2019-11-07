@@ -43,7 +43,9 @@ def test_toxy_relative():
 def test_toxy_absolute():
     tf = TdmsFile("./tests/tdms_files/wdt_absolutet0.tdms")
     wf = tf.group_0.ch0.data
-    assert wf.t0 == datetime(2019, 1, 1, 0, 0)
+    expected = datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc)
+    expected = expected.astimezone().replace(tzinfo=None)
+    assert wf.t0 == expected
     x, _ = wf.to_xy(False)
 
     def compute_expected(s):
