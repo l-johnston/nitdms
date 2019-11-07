@@ -36,16 +36,3 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
     reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
-
-- script: |
-    python setup.py sdist bdist_wheel
-  displayName: 'Build the python distribution from source'
-
-- task: TwineAuthenticate@1
-  displayName: 'Twine Authenticate'
-  inputs:
-    pythonUploadServiceConnection: ljohnston
-
-- script: |
-    python -m twine upload -r nitdms --config-file $(PYPIRC_PATH) dist/*
-  displayName: 'Upload to PyPI'
