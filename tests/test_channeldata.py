@@ -1,5 +1,5 @@
 """Test channel data"""
-from datetime import datetime
+from datetime import datetime, timezone
 import numpy as np
 from nitdms import TdmsFile, WaveformDT
 
@@ -135,7 +135,13 @@ def test_channeldata_timestamp():
     data = tf.group_0.ch_0.data
     assert isinstance(data[0], datetime)
     assert data.size == 10
-    expected = [datetime(2019, 1, 1, 0, 0, s) for s in range(10)]
+
+    def compute_expected(s):
+        t = datetime(2019, 1, 1, 6, 0, s, tzinfo=timezone.utc)
+        t = t.astimezone().replace(tzinfo=None)
+        return t
+
+    expected = [compute_expected(s) for s in range(10)]
     results = data == expected
     assert results.all()
 
