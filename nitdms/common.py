@@ -151,9 +151,10 @@ class TdmsObject:
             timestamp (float): seconds in LabVIEWS's epoch
 
         Returns:
-            datetime: in Posix epoch and UTC timezone"""
+            datetime: in machine's local time zone and time zone naive"""
+        # LabVIEW's timestamp is UTC
         dt = datetime(1904, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=timestamp)
-        return dt
+        return dt.astimezone().replace(tzinfo=None)
 
 
 class Group(TdmsObject):

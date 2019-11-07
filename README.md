@@ -7,10 +7,11 @@ objects and respective properties. These objects and properties are dynamically
 instantiated as attributes allowing easy access from within an interactive session
 with tab completion such as Jupyter or bash.
 
-Channel data is returned as a numpy ndarray or WaveformDT if data in the file is from
+Channel data is returned as a numpy ndarray, or WaveformDT if data in the file is from
 LabVIEW's waveform data type. WaveformDT is a subclass of ndarray that mimics
 the waveform data type.
-Timestamps are datetime objects in UTC timezone.
+LabVIEW's timestamp is stored as UTC in the TDMS file. `nitdms` returns the timestamp
+in the machine's local time zone consistent with LabVIEW and aligns with WaveformDT.
 
 ## Installing
 ```bash
@@ -126,3 +127,7 @@ datetime.datetime(...)
 >>> ax.plot(x, y)
 >>> plt.show()
 ```
+
+# Change list
+- 1.0.8 Return timestamps in the machine's local timezone
+- 1.0.7 Add WaveformDT feature

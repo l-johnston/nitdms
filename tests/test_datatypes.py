@@ -84,7 +84,9 @@ def test_boolean():
 def test_timestamp():
     value = TF.Timestamp
     assert isinstance(value, datetime)
-    assert value == datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc)
+    expected = datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc).astimezone()
+    expected = expected.replace(tzinfo=None)
+    assert value == expected
 
 
 def test_complexsingle():
@@ -97,9 +99,3 @@ def test_complexdouble():
     value = TF.ComplexDouble
     assert isinstance(value, complex)
     assert value == complex(0.0, -1.0)
-
-
-def test_timestampbefore1904():
-    tf = TdmsFile("./tests/tdms_files/timestamp before 1904.tdms")
-    time = tf.time
-    assert time == datetime(1903, 12, 31, 23, 59, 59, tzinfo=timezone.utc)
