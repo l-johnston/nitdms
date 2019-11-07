@@ -1,5 +1,5 @@
 """test data type decoding"""
-from datetime import datetime
+from datetime import datetime, timezone
 from nitdms import TdmsFile
 
 # pylint: disable=missing-docstring
@@ -84,6 +84,8 @@ def test_boolean():
 def test_timestamp():
     value = TF.Timestamp
     assert isinstance(value, datetime)
+    expected = datetime(2019, 1, 1, 0, 0, tzinfo=timezone.utc).astimezone()
+    expected = expected.replace(tzinfo=None)
     assert value == datetime(2019, 1, 1, 0, 0)
 
 
