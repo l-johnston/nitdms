@@ -47,5 +47,5 @@ steps:
     pythonUploadServiceConnection: ljohnston
 
 - script: |
-    python -m twine upload -r "pypitest" --config-file $(PYPIRC_PATH) dist/*
+    python -m twine upload -r "ljohnston" --config-file $(PYPIRC_PATH) dist/*
   displayName: 'Upload to PyPI'
