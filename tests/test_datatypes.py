@@ -84,9 +84,9 @@ def test_boolean():
 def test_timestamp():
     value = TF.Timestamp
     assert isinstance(value, datetime)
-    expected = datetime(2019, 1, 1, 0, 0, tzinfo=timezone.utc).astimezone()
+    expected = datetime(2019, 1, 1, 6, 0, tzinfo=timezone.utc).astimezone()
     expected = expected.replace(tzinfo=None)
-    assert value == datetime(2019, 1, 1, 0, 0)
+    assert value == expected
 
 
 def test_complexsingle():
