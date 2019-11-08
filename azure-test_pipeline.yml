@@ -1,3 +1,4 @@
+# Pipeline that executes on pushes and pull requests to master branch
 trigger:
 - master
 
