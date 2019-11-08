@@ -20,7 +20,7 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install pytest pytest-cov
+    pip install pytest pytest-cov twine wheel
     pip install -e .
   displayName: 'Install dependencies'
 
