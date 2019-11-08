@@ -129,5 +129,6 @@ datetime.datetime(...)
 ```
 
 # Change list
+- 1.0.9 Build process update
 - 1.0.8 Return timestamps in the machine's local timezone
 - 1.0.7 Add WaveformDT feature
