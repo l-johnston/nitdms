@@ -16,12 +16,11 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install wheel twine
+    pip install pytest pytest-cov wheel twine
     pip install -e .
   displayName: 'Install dependencies'
 
 - script: |
-    pip install pytest pytest-cov
     pytest tests/ --junitxml=junit/test-results.xml --cov=nitdms --cov-report=html --cov-report=xml
   displayName: 'pytest'
 
