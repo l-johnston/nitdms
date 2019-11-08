@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms?branchName=master)](https://dev.azure.com/l-johnston/nitdms/_build/latest?definitionId=2&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/2)
+[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms-test?branchName=master)](https://dev.azure.com/l-johnston/nitdms/_build/latest?definitionId=3&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/3)
 # `nitdms` - A pythonic TDMS file reader
 
 The main export from the `nitdms` package is the TdmsFile class. Upon instantiation,
@@ -129,6 +129,7 @@ datetime.datetime(...)
 ```
 
 # Change list
+- 1.0.10 Readme update
 - 1.0.9 Build process update
 - 1.0.8 Return timestamps in the machine's local timezone
 - 1.0.7 Add WaveformDT feature
