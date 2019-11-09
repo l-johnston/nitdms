@@ -4,7 +4,7 @@ pr:
 - master
 
 jobs:
-- job: Test on linux
+- job: Test_linux
   displayName: Test on linux
   strategy:
     matrix:
@@ -42,7 +42,7 @@ jobs:
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
 
-- job: Test on windows
+- job: Test_windows
   displayName: Test on windows
   strategy:
     matrix:
@@ -80,11 +80,11 @@ jobs:
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
 
-- job: Publish to PyPI
+- job: Publish
   displayName: Publish to PyPI
   dependsOn:
-  - Test on linux
-  - Test on windows
+  - Test_linux
+  - Test_windows
   condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   variables:
     major: 1
