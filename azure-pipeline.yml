@@ -85,7 +85,7 @@ jobs:
   dependsOn:
   - Test on linux
   - Test on windows
-  condition: and(succeeded(), eq($(Build.Reason), 'IndividualCI'))
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   variables:
     major: 1
     minor: 1
