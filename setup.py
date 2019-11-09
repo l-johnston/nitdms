@@ -11,7 +11,12 @@ def readme():
 def get_version():
     """Get the version number"""
     with open("nitdms/version.py") as f:
-        version = [s.strip().strip('"') for s in f.read().split("=")][1]
+        lines = f.readlines()
+    line = ""
+    for line in lines:
+        if line.startswith("__version__"):
+            break
+    version = [s.strip().strip('"') for s in line.split("=")][1]
     return version
 
 

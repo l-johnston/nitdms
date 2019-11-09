@@ -1,0 +1,125 @@
+trigger: master
+pr: master
+
+jobs:
+  job: Test on linux
+  displayName: Test on linux
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+  continueOnError: false
+  pool:
+    vmImage: 'ubuntu-latest'
+  timeoutInMinutes: 10
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install pytest pytest-cov
+      pip install -e .
+    displayName: 'Install dependencies'
+
+  - script: |
+      pytest tests/ --junitxml=junit/test-results.xml --cov=nitdms --cov-report=html --cov-report=xml
+    displayName: 'Run test suite'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Test results for Python $(python.version)'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
+
+  job: Test on windows
+  displayName: Test on windows
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+  continueOnError: false
+  pool:
+    vmImage: 'windows-latest'
+  timeoutInMinutes: 10
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install pytest pytest-cov
+      pip install -e .
+    displayName: 'Install dependencies'
+
+  - script: |
+      pytest tests/ --junitxml=junit/test-results.xml --cov=nitdms --cov-report=html --cov-report=xml
+    displayName: 'Run test suite'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Test results for Python $(python.version)'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
+
+  job: Publish to PyPI
+  displayName: Publish to PyPI
+  dependsOn:
+  - Test on linux
+  - Test on windows
+  condition: and(succeeded(), eq($(Build.Reason), 'IndividualCI'))
+  variables:
+    major: 1
+    minor: 1
+    micro: $[counter(variables['minor'], 0)]
+  pool:
+    vmImage: 'ubuntu-latest'
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+  timeoutInMinutes: 10
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install twine wheel
+      pip install -e .
+    displayName: 'Install dependencies'
+  
+  - script: |
+      python nitdms/version.py $(major) $(minor) $(micro)
+    displayName: 'Update version number'
+
+  - script: |
+      python setup.py sdist bdist_wheel
+    displayName: 'Build the python distribution from source'
+
+  - task: TwineAuthenticate@1
+    displayName: 'Twine Authenticate'
+    inputs:
+      pythonUploadServiceConnection: ljohnston
+
+  - script: |
+      python -m twine upload -r nitdms --config-file $(PYPIRC_PATH) dist/*
+    displayName: 'Upload to PyPI'
