@@ -1,8 +1,10 @@
-trigger: master
-pr: master
+trigger:
+- master
+pr:
+- master
 
 jobs:
-  job: Test on linux
+- job: Test on linux
   displayName: Test on linux
   strategy:
     matrix:
@@ -40,7 +42,7 @@ jobs:
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
 
-  job: Test on windows
+- job: Test on windows
   displayName: Test on windows
   strategy:
     matrix:
@@ -78,7 +80,7 @@ jobs:
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
 
-  job: Publish to PyPI
+- job: Publish to PyPI
   displayName: Publish to PyPI
   dependsOn:
   - Test on linux
