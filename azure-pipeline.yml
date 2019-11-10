@@ -88,7 +88,7 @@ jobs:
   condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   variables:
     major: 1
-    minor: 2
+    minor: 4
     micro: $[counter(variables['minor'], 0)]
   pool:
     vmImage: 'ubuntu-latest'
