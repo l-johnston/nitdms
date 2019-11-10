@@ -126,8 +126,9 @@ jobs:
       python -m twine upload -r nitdms --config-file $(PYPIRC_PATH) dist/*
     displayName: 'Upload to PyPI'
 
-- task: GitHubRelease@0
-    inputs:
-      gitHubConnection: l-johnston
-      tagSource: 'User specified tag'
-      tag: 'v$(variables.major).$(variables.minor).$(variables.micro)'
+  - task: GitHubRelease@0
+      inputs:
+        gitHubConnection: l-johnston
+        tagSource: 'User specified tag'
+        tag: 'v$(variables.major).$(variables.minor).$(variables.micro)'
+      displayName: 'Set release tag'
