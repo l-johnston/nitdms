@@ -129,7 +129,7 @@ datetime.datetime(...)
 ```
 
 # Change list
-- 1.1.2 Update build ID in readme
+- 1.2.0 Update build ID in readme
 - 1.1.1 Test coverage and readme update
 - 1.1.0 Change to a CI/CD pipeline
 - 1.0.10 Readme update
