@@ -127,8 +127,8 @@ jobs:
     displayName: 'Upload to PyPI'
 
   - task: GitHubRelease@0
-      inputs:
-        gitHubConnection: l-johnston
-        tagSource: 'User specified tag'
-        tag: 'v$(variables.major).$(variables.minor).$(variables.micro)'
-      displayName: 'Set release tag'
+    inputs:
+      gitHubConnection: l-johnston
+      tagSource: 'User specified tag'
+      tag: 'v$(variables.major).$(variables.minor).$(variables.micro)'
+    displayName: 'Set release tag'
