@@ -4,6 +4,40 @@ pr:
 - master
 
 jobs:
+- job: Code_QA
+  displayName: Code QA
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+  continueOnError: true
+  pool:
+    vmImage: 'ubuntu-latest'
+  timeoutInMinutes: 10
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install pylint black
+      pip install -e .
+    displayName: 'Install dependencies'
+
+  - script: |
+      mkdir $(System.DefaultWorkingDirectory)/code_qa
+      pylint --variable-rgx=[a-z_][a-z0-9_]{0,30}$ --argument-rgx=[a-z_][a-z0-9_]{0,30}$ --exit-zero nitdms > code_qa/pylint_report.txt
+    displayName: 'Run pylint'
+
+  - script: |
+      black --diff > code_qa/black_report.txt
+    displayName: 'Run black'
+
+  - publish: $(System.DefaultWorkingDirectory)/code_qa
+    artifact: Code_QA
+
 - job: Test_linux
   displayName: Test on linux
   strategy:
