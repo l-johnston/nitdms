@@ -201,11 +201,12 @@ class TdmsFile(TdmsObject):
                         pass
                     elif index_type in [0x00001269, 0x00001369]:
                         self._ptr += 8
-                        count = self._unpack(TdsDataType.U64, byte_order)
+                        chunk = self._unpack(TdsDataType.U64, byte_order)
                         fcs_vector_size = self._unpack(TdsDataType.U32, byte_order)
                         self._ptr += fcs_vector_size * 20
                         rdw_vector_size = self._unpack(TdsDataType.U32, byte_order)
                         rdw = self._unpack(TdsDataType.U32, byte_order)
+                        count = raw_data_size // rdw
                         self._ptr += (rdw_vector_size - 1) * 4
                         rd_sz = rdw // n_objects
                         rd_fmt = {1: "b", 2: "h", 4: "i"}[rd_sz]
