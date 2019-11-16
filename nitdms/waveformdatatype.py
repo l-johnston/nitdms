@@ -76,10 +76,15 @@ class WaveformDT(np.ndarray):
         samples = y.size
         if relative:
             t0 = t0 if isinstance(t0, Number) else 0.0
+            x = np.linspace(t0, t0 + samples * dt, samples, False)
         else:
             t0 = np.datetime64(t0.astimezone().replace(tzinfo=None))
+            t0_array = np.asarray([t0] * samples)
             dt = np.timedelta64(np.uint32(dt * 1e9), "ns")
-        x = np.arange(t0, t0 + samples * dt, dt)
+            dt_array = np.asarray(
+                [np.timedelta64(0, "ns")] + [dt] * (samples - 1)
+            ).cumsum()
+            x = t0_array + dt_array
         return (x, y)
 
     def __array_ufunc__(self, ufunc, method, *inputs, **kwargs):

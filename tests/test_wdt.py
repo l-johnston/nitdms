@@ -35,7 +35,7 @@ def test_toxy_relative():
     dt = wf.dt
     samples = wf.size
     x = wf.to_xy()[0]
-    expected = np.arange(0.0, samples * dt, dt)
+    expected = np.linspace(0.0, samples * dt, samples, False)
     result = x == expected
     assert result.all()
 
