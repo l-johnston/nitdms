@@ -23,7 +23,7 @@ Documentation
 .. toctree::
    :maxdepth: 2
 
-   Introduction
-   Usage
-   Example
-   API
+   Introduction <introduction>
+   Usage <usage>
+   Example <example>
+   API <api>

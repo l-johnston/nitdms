@@ -114,11 +114,49 @@ jobs:
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/htmlcov'
 
+- job: Update_Documentation
+  displayName: Update Documentation
+  strategy:
+    matrix:
+      Python37:
+        python.version: '3.7'
+  continueOnError: false
+  pool:
+    vmImage: 'ubuntu-latest'
+  timeoutInMinutes: 10
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+    displayName: 'Use Python $(python.version)'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install --upgrade Sphinx
+      pip install -e .
+    displayName: 'Install dependencies'
+
+  - script: |
+      cd doc
+      make html
+    displayName: 'Build documentation'
+
+  - script: |
+      cd doc/_build/html
+      touch .nojekyll
+      git init
+      git add .
+      git commit -m "build project documentation"
+      git remote add github git@github.com:l-johnston/nitdms.git
+      git push github master:gh-pages
+    displayName: 'Publish Documentation'
+
 - job: Publish
   displayName: Publish to PyPI
   dependsOn:
   - Test_linux
   - Test_windows
+  - Update_Documentation
   condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   variables:
     major: 1
@@ -159,40 +197,3 @@ jobs:
   - script: |
       python -m twine upload -r nitdms --config-file $(PYPIRC_PATH) dist/*
     displayName: 'Upload to PyPI'
-
-- job: Update_Documentation
-  displayName: Update Documentation
-  strategy:
-    matrix:
-      Python37:
-        python.version: '3.7'
-  continueOnError: true
-  pool:
-    vmImage: 'ubuntu-latest'
-  timeoutInMinutes: 10
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-    displayName: 'Use Python $(python.version)'
-
-  - script: |
-      python -m pip install --upgrade pip
-      pip install --upgrade Sphinx
-      pip install -e .
-    displayName: 'Install dependencies'
-
-  - script: |
-      cd doc
-      make html
-    displayName: 'Build documentation'
-
-  - script: |
-      cd doc/_build/html
-      touch .nojekyll
-      git init
-      git add .
-      git commit -m "build project documentation"
-      git remote add github git@github.com:l-johnston/nitdms.git
-      git push -u github gh-pages
-    displayName: 'Publish Documentation'
