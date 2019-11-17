@@ -116,6 +116,9 @@ jobs:
 
 - job: Update_Documentation
   displayName: Update Documentation
+  dependsOn:
+  - Test_linux
+  - Test_windows
   strategy:
     matrix:
       Python37:
@@ -145,6 +148,8 @@ jobs:
       cd doc/_build/html
       touch .nojekyll
       git init
+      git config user.email "lee.johnston.100@gmail.com"
+      git config user.name "Lee Johnston"
       git add .
       git commit -m "build project documentation"
       git remote add github git@github.com:l-johnston/nitdms.git
