@@ -156,6 +156,7 @@ jobs:
       git add .
       git commit -m "build project documentation"
       git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' remote add github https://github.com/l-johnston/nitdms.git
+      git remote -v
       git push github master:gh-pages
     env:
       PAT: $(PAT)
