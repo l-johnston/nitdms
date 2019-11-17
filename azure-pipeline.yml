@@ -139,6 +139,10 @@ jobs:
       pip install -e .
     displayName: 'Install dependencies'
 
+  - checkout: self
+    persistCredentials: true
+    clean: true
+
   - script: |
       cd doc
       make html
