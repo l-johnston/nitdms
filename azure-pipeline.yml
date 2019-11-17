@@ -155,10 +155,10 @@ jobs:
       git config user.name "Lee Johnston"
       git add .
       git commit -m "build project documentation"
-      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' remote add github git@github.com:l-johnston/nitdms.git
-      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' push github master:gh-pages
+      git remote add github https://github.com/l-johnston/nitdms.git
+      git push github master:gh-pages
     env:
-      PAT: $(PAT)
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     displayName: 'Publish Documentation'
 
 - job: Publish
