@@ -145,8 +145,6 @@ jobs:
     displayName: 'Build documentation'
 
   - script: |
-      env:
-        SYSTEM_ACCESSTOKEN: $(system.accesstoken)
       cd doc/_build/html
       touch .nojekyll
       git init
@@ -156,6 +154,8 @@ jobs:
       git commit -m "build project documentation"
       git remote add github git@github.com:l-johnston/nitdms.git
       git push github master:gh-pages
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     displayName: 'Publish Documentation'
 
 - job: Publish
