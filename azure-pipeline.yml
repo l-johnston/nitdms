@@ -119,6 +119,7 @@ jobs:
   dependsOn:
   - Test_linux
   - Test_windows
+  condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   strategy:
     matrix:
       Python37:
