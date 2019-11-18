@@ -46,9 +46,24 @@ class WaveformDT(np.ndarray):
         self.dt = getattr(obj, "dt", 1.0)
 
     def __repr__(self):
-        repr_str = super(WaveformDT, self).__repr__()
-        wf_details = f", {self.dt}, {self.t0})"
-        return repr_str.replace(")", wf_details)
+        t0 = self.t0 if isinstance(self.t0, Number) else 0.0
+        t0 += getattr(self, "wf_start_offset", 0.0)
+        dt = self.dt
+        rows = []
+        if self.size < 50:
+            for i, sample in enumerate(self):
+                rows.append(f"{t0 + i*dt:11.4e}\t{sample:11.4e}")
+        else:
+            for i, sample in enumerate(self[:5]):
+                rows.append(f"{t0 + i*dt:11.4e}\t{sample:11.4e}")
+            rows.append(" ...")
+            t0 = t0 + (self.size - 5) * dt
+            for i, sample in enumerate(self[-5:]):
+                rows.append(f"{t0 + i*dt:11.4e}\t{sample:11.4e}")
+        rows.append(f"Length: {self.size}")
+        rows.append(f"t0: {self.t0}")
+        rows.append(f"dt: {self.dt:11.4e}")
+        return "\n".join(rows)
 
     @property
     def Y(self):
@@ -122,3 +137,30 @@ class WaveformDT(np.ndarray):
         if method == "at":
             return None
         return results[0] if len(results) == 1 else results
+
+    def head(self, n=5):
+        """Return first n samples of the waveform
+
+        Args:
+            n (int): number of samples to return
+
+        Returns:
+            (WaveformDT): first n samples
+        """
+        return self[:n]
+
+    def tail(self, n=5):
+        """Return the last n samples of the waveform
+
+        Args:
+            n (int): number of samples to return
+
+        Returns:
+            (WaveformDT): last n samples
+        """
+        start_offset = self.t0 if isinstance(self.t0, Number) else 0.0
+        start_offset += getattr(self, "wf_start_offset", 0.0)
+        start_offset += (self.size - n) * self.dt
+        wf = self[-n:]
+        setattr(wf, "wf_start_offset", start_offset)
+        return wf
