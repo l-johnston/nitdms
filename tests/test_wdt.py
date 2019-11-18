@@ -65,8 +65,28 @@ def test_extraattributes():
 
 
 def test_repr():
-    wf = WaveformDT([1, 2, 3], 1, 0)
-    assert wf.__repr__() == "WaveformDT([1, 2, 3], 1, 0)"
+    wf = WaveformDT([1, 2], 1, 0)
+    expected = (
+        " 0.0000e+00\t 1.0000e+00\n 1.0000e+00\t 2.0000e+00\n"
+        + "Length: 2\nt0: 0\ndt:  1.0000e+00"
+    )
+    assert wf.__repr__() == expected
+    wf = WaveformDT(range(60), 1, 0)
+    expected = (
+        " 0.0000e+00\t 0.0000e+00\n"
+        " 1.0000e+00\t 1.0000e+00\n"
+        " 2.0000e+00\t 2.0000e+00\n"
+        " 3.0000e+00\t 3.0000e+00\n"
+        " 4.0000e+00\t 4.0000e+00\n"
+        " ...\n"
+        " 5.5000e+01\t 5.5000e+01\n"
+        " 5.6000e+01\t 5.6000e+01\n"
+        " 5.7000e+01\t 5.7000e+01\n"
+        " 5.8000e+01\t 5.8000e+01\n"
+        " 5.9000e+01\t 5.9000e+01\n"
+        "Length: 60\nt0: 0\ndt:  1.0000e+00"
+    )
+    assert wf.__repr__() == expected
 
 
 def test_Y():
@@ -103,3 +123,31 @@ def test_ufunc_out():
     np.multiply(a, 2.0, out=c)
     results = c == WaveformDT([2.0, 4.0, 6.0], 2, 1)
     assert results.all()
+
+
+def test_head():
+    wf = WaveformDT(range(60), 1, 0)
+    wf_head = wf.head()
+    expected = (
+        " 0.0000e+00\t 0.0000e+00\n"
+        " 1.0000e+00\t 1.0000e+00\n"
+        " 2.0000e+00\t 2.0000e+00\n"
+        " 3.0000e+00\t 3.0000e+00\n"
+        " 4.0000e+00\t 4.0000e+00\n"
+        "Length: 5\nt0: 0\ndt:  1.0000e+00"
+    )
+    assert wf_head.__repr__() == expected
+
+
+def test_tail():
+    wf = WaveformDT(range(60), 1, 0)
+    wf_tail = wf.tail()
+    expected = (
+        " 5.5000e+01\t 5.5000e+01\n"
+        " 5.6000e+01\t 5.6000e+01\n"
+        " 5.7000e+01\t 5.7000e+01\n"
+        " 5.8000e+01\t 5.8000e+01\n"
+        " 5.9000e+01\t 5.9000e+01\n"
+        "Length: 5\nt0: 0\ndt:  1.0000e+00"
+    )
+    assert wf_tail.__repr__() == expected
