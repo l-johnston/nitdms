@@ -144,22 +144,24 @@ jobs:
 
   - script: |
       cd doc
-      make html
-    displayName: 'Build documentation'
-
-  - script: |
-      cd doc/_build/html
-      touch .nojekyll
+      mkdir _build
+      cd _build
+      mkdir html
+      cd html
       git init
       git config user.email "lee.johnston.100@gmail.com"
       git config user.name "Lee Johnston"
+      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' remote add github https://github.com/l-johnston/nitdms.git
+      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' pull github gh-pages:master
+      cd ../..
+      make html
+      cd _build/html
       git add .
       git commit -m "build project documentation"
-      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' remote add github https://github.com/l-johnston/nitdms.git
-      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' -f push github master:gh-pages
+      git -c credential.helper='!f() { echo "username=token"; echo "password=$PAT"; };f' push -f github master:gh-pages
     env:
       PAT: $(PAT)
-    displayName: 'Publish Documentation'
+    displayName: 'Build and publish documentation'
 
 - job: Publish
   displayName: Publish to PyPI
