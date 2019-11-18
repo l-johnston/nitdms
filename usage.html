@@ -38,7 +38,8 @@
 channel data in a file that you didn’t create. In LabVIEW code, this can be a
 frustrating experience - <code class="docutils literal notranslate"><span class="pre">nitdms</span></code> to the rescue! At an interactive prompt, just use
 tab-completion to discover all the objects available at each level of the heirarchy and
-access the desired value. You can also print the file heirarchy showing all the objects.</p>
+access the desired value.</p>
+<p>You can also print the file heirarchy showing all the objects:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
@@ -53,6 +54,65 @@ access the desired value. You can also print the file heirarchy showing all the 
 <span class="go">      &lt;channel property&gt;</span>
 <span class="go">      ...</span>
 <span class="go">      data</span>
+</pre></div>
+</div>
+<p>LabVIEW doesn’t impose any constraints on the names of groups, channels
+or properties. But, Python’s attributes must be valid indentifiers - generally
+ASCII letters, numbers (except first character) and underscore. So, TdmsFile also
+supports item access like a dict. For example, suppose a group name in the file
+is ‘1group’ and has channel ‘1channel’. Both names are invalid identifiers and
+will generate a syntax error when using dot access.</p>
+<p>The usage pattern in this case is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
+<span class="go">file_name</span>
+<span class="go">    1group</span>
+<span class="go">        1channel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">tf</span><span class="p">[</span><span class="s1">&#39;1group&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">channel</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;1channel&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">data</span>
+</pre></div>
+</div>
+<p>Want a Pandas DataFrame? For example, suppose the tdms file contains a group ‘group_0’
+with two channels ‘ch_0’ and ‘ch_1’ with equal length.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">group_0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">group</span><span class="p">],</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span>
+<span class="go">  ch_0   ch_1</span>
+<span class="go">0     0     10</span>
+<span class="go">1     1     11</span>
+<span class="go">2     2     12</span>
+<span class="gp">...</span>
+<span class="go">9     9     19</span>
+</pre></div>
+</div>
+<p>So, why doesn’t TdmsFile just return a DataFrame? The contents of the tdms file are
+arbitrary and have no general, direct mapping to a DataFrame. For example, the
+tdms file channel data is interpreted by the properties, but the DataFrame columns,
+which are Pandas Series objects, don’t support metadata. In some situations a DataFrame
+is appropriate, but in general it isn’t.</p>
+<p>If the channel data in the TDMS file originated from LabVIEW’s waveform data type,
+the returned data will be a WaveformDT that is a subclass of numpy ndarray. This
+mimics the waveform data type in LabVIEW. In addition to all of the attributes
+such as t0 and dt, WaveformDT provides a convenience function to_xy() that
+facilitates plotting data in matplotlib. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">t0</span>
+<span class="go">datetime.datetime(...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">dt</span>
+<span class="go">&lt;value&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_xy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
