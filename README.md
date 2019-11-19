@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms?branchName=master)](https://dev.azure.com/l-johnston/nitdms/_build/latest?definitionId=7&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/7)
+[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms?branchName=master)](https://dev.azure.com/l-johnston/nitdms/_build/latest?definitionId=7&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/7) ![PyPI version](https://img.shields.io/pypi/v/nitdms)
 # `nitdms` - A pythonic TDMS file reader
 
 The main export from the `nitdms` package is the TdmsFile class. Upon instantiation,
@@ -21,12 +21,12 @@ $ pip install nitdms
 ## Usage
 Within an interactive session with tab completion:
 ```python
->>>from nitdms import TdmsFile
->>>tf = TdmsFile(<file>)
->>>data = tf.<group>.<channel>.data
->>>t0 = tf.<group>.<channel>.wf_start_time
->>>dt = tf.<group>.<channel>.wf_increment
->>>group_property = tf.<group>.<property>
+>>> from nitdms import TdmsFile
+>>> tf = TdmsFile(<file>)
+>>> data = tf.<group>.<channel>.data
+>>> t0 = tf.<group>.<channel>.wf_start_time
+>>> dt = tf.<group>.<channel>.wf_increment
+>>> group_property = tf.<group>.<property>
 ```
 
 ## Documentation
