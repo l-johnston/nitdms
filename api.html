@@ -31,8 +31,246 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="api">
-<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nitdms.common">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-nitdms.common" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="nitdms.common.TdmsObject">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">TdmsObject</code><a class="headerlink" href="#nitdms.common.TdmsObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for the three TDMS object types: File, Group and Channel</p>
+<p>TdmsObject is a container whose elements are attributes that are dynamically
+instantiated during discovery of the tdms file metadata. The class, and derivatives,
+support both attribute dot access and dict-like item access.
+The container is immutable and supports iteration through the attributes.</p>
+<p>TdmsObject is not intended to be instantiated in application code.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="nitdms.common.Group">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Group</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group object for group properties and channel objects</p>
+<p>Not intended to be instantiated in application code.</p>
+<dl class="method">
+<dt id="nitdms.common.Group.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree view of this group’s channels and properties</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nitdms.common.Channel">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Channel</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Channel object for channel properties and data</p>
+<p>Not intended to be instantiated in application code.</p>
+<dl class="method">
+<dt id="nitdms.common.Channel.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree view of this channel’s properties and data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.common.Channel.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#nitdms.common.Channel.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>the channel data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray or <a class="reference internal" href="#nitdms.waveformdatatype.WaveformDT" title="nitdms.waveformdatatype.WaveformDT">WaveformDT</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nitdms.reader"></span><dl class="class">
+<dt id="nitdms.reader.TdmsFile">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.reader.</code><code class="sig-name descname">TdmsFile</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>TDMS file object containing all groups, channels, properties and data</p>
+<p>Upon instantiation, the class loads the TDMS file into memory and discovers
+all of the file, group and channel objects and respective properties. These
+objects and properties are dynamically instantiated as attributes allowing easy
+access from within an interactive session with tab completion such as Jupyter.</p>
+<dl class="attribute">
+<dt id="nitdms.reader.TdmsFile.file">
+<code class="sig-name descname">file</code><a class="headerlink" href="#nitdms.reader.TdmsFile.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>TDMS file to read</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span>
+<span class="go">array([...])</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="nitdms.reader.TdmsFile.info">
+<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#nitdms.reader.TdmsFile.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>names of all the groups, channels and properties in the file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nitdms.waveformdatatype"></span><dl class="class">
+<dt id="nitdms.waveformdatatype.WaveformDT">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.waveformdatatype.</code><code class="sig-name descname">WaveformDT</code><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Python implementation of LabVIEW’s waveform data type</p>
+<p>LabVIEW’s waveform data type has three required attributes: t0, dt, and Y.
+Additional attributes can be set and are included in the returned WaveformDT.
+WaveformDT provides a convenience function to_xy() that facilitates plotting
+data in matplotlib.</p>
+<dl class="attribute">
+<dt id="nitdms.waveformdatatype.WaveformDT.Y">
+<code class="sig-name descname">Y</code><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.Y" title="Permalink to this definition">¶</a></dt>
+<dd><p>data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>array-like</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nitdms.waveformdatatype.WaveformDT.dt">
+<code class="sig-name descname">dt</code><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p>wf_increment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="nitdms.waveformdatatype.WaveformDT.t0">
+<code class="sig-name descname">t0</code><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.t0" title="Permalink to this definition">¶</a></dt>
+<dd><p>wf_start_time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float or datetime</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Example</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_xy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="go">[&lt;matplotlib.lines.Line2D object at ...&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The x-axis array will be relative time by default. For absolute time, set the
+relative parameter to False.</p>
+</div>
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">Y</code></dt>
+<dd><p>data array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">dt</code></dt>
+<dd><p>waveform increment</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.waveformdatatype.WaveformDT.head">
+<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param">n=5</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first n samples of the waveform</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – number of samples to return</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>first n samples</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nitdms.waveformdatatype.WaveformDT" title="nitdms.waveformdatatype.WaveformDT">WaveformDT</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.waveformdatatype.WaveformDT.set_attributes">
+<code class="sig-name descname">set_attributes</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.set_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set waveform attributes</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<em class="property">property </em><code class="sig-name descname">t0</code></dt>
+<dd><p>waveform start time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>datetime or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.waveformdatatype.WaveformDT.tail">
+<code class="sig-name descname">tail</code><span class="sig-paren">(</span><em class="sig-param">n=5</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.tail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the last n samples of the waveform</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em>) – number of samples to return</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>last n samples</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#nitdms.waveformdatatype.WaveformDT" title="nitdms.waveformdatatype.WaveformDT">WaveformDT</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.waveformdatatype.WaveformDT.to_xy">
+<code class="sig-name descname">to_xy</code><span class="sig-paren">(</span><em class="sig-param">relative=True</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.waveformdatatype.WaveformDT.to_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the (x, y) tuple</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>relative</strong> (<em>bool</em>) – y is relative time if True, absolute if False</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x, y arrays</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 
 

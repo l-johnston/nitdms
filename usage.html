@@ -40,7 +40,7 @@ frustrating experience - <code class="docutils literal notranslate"><span class=
 tab-completion to discover all the objects available at each level of the heirarchy and
 access the desired value.</p>
 <p>You can also print the file heirarchy showing all the objects:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
 <span class="go">&lt;file&gt;</span>
@@ -63,7 +63,7 @@ supports item access like a dict. For example, suppose a group name in the file
 is ‘1group’ and has channel ‘1channel’. Both names are invalid identifiers and
 will generate a syntax error when using dot access.</p>
 <p>The usage pattern in this case is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tf</span><span class="p">)</span>
 <span class="go">file_name</span>
@@ -77,7 +77,7 @@ will generate a syntax error when using dot access.</p>
 <p>Want a Pandas DataFrame? For example, suppose the tdms file contains a group ‘group_0’
 with two channels ‘ch_0’ and ‘ch_1’ with equal length.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">group</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">group_0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="n">ch</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">group</span><span class="p">],</span> <span class="p">[</span><span class="n">group</span><span class="p">[</span><span class="n">ch</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">group</span><span class="p">]))</span>
@@ -102,7 +102,7 @@ mimics the waveform data type in LabVIEW. In addition to all of the attributes
 such as t0 and dt, WaveformDT provides a convenience function to_xy() that
 facilitates plotting data in matplotlib. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="k">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">t0</span>
@@ -112,6 +112,24 @@ facilitates plotting data in matplotlib. For example:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_xy</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
+have the attribute <cite>unit_string</cite> indicating the measurement unit. You can make the
+data unit-aware using the <a class="reference external" href="https://github.com/l-johnston/unit_system">unit_system</a>
+package.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">unit_system.predefined_units</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">unit_string</span>
+<span class="go">&#39;Volts&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">to_xy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">s</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">*</span><span class="n">V</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>

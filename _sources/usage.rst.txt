@@ -84,3 +84,21 @@ facilitates plotting data in matplotlib. For example:
   >>> fig, ax = plt.subplots()
   >>> ax.plot(x, y)
   >>> plt.show()
+
+If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
+have the attribute `unit_string` indicating the measurement unit. You can make the
+data unit-aware using the `unit_system <https://github.com/l-johnston/unit_system>`_
+package.
+
+>>> import matplotlib.pyplot as plt
+>>> from nitdms import TdmsFile
+>>> from unit_system.predefined_units import *
+>>> tf = TdmsFile(<file>)
+>>> data = tf.<group>.<channel>.data
+>>> data.unit_string
+'Volts'
+>>> x, y = data.to_xy()
+>>> x = x*s
+>>> y = y*V
+>>> plt.plot(x, y)
+>>> plt.show()
