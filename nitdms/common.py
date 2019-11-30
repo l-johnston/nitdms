@@ -95,6 +95,8 @@ class TdmsObject:
     instantiated during discovery of the tdms file metadata. The class, and derivatives,
     support both attribute dot access and dict-like item access.
     The container is immutable and supports iteration through the attributes.
+
+    TdmsObject is not intended to be instantiated in application code.
     """
 
     def _create(self, name, value):
@@ -158,7 +160,10 @@ class TdmsObject:
 
 
 class Group(TdmsObject):
-    """Group object for group properties and channel objects"""
+    """Group object for group properties and channel objects
+    
+    Not intended to be instantiated in application code.
+    """
 
     def __init__(self, name):
         self._name = name
@@ -195,7 +200,10 @@ class Group(TdmsObject):
 
 
 class Channel(TdmsObject):
-    """Channel object for channel properties and data"""
+    """Channel object for channel properties and data
+
+    Not intended to be instantiated in application code.
+    """
 
     def __init__(self, name):
         self._name = name
@@ -210,10 +218,7 @@ class Channel(TdmsObject):
 
     @property
     def data(self):
-        """Return the channel data
-
-        (ndarray or WaveformDT)
-        """
+        """ndarray or WaveformDT: the channel data"""
         if self._data is None:
             self._data = self._get_data()
         data = self._data

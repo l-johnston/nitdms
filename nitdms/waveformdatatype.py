@@ -6,31 +6,30 @@ import numpy as np
 class WaveformDT(np.ndarray):
     """Python implementation of LabVIEW's waveform data type
 
-    Args:
+    LabVIEW's waveform data type has three required attributes: t0, dt, and Y.
+    Additional attributes can be set and are included in the returned WaveformDT.
+    WaveformDT provides a convenience function to_xy() that facilitates plotting
+    data in matplotlib.
+
+    Attributes:
         Y (array-like): data
         dt (float): wf_increment
         t0 (float or datetime): wf_start_time
 
-    Returns:
-        (WaveformDT)
+    Example:
+        >>> import matplotlib as plt
+        >>> from nitdms import TdmsFile
+        >>> tf = TdmsFile(<file>)
+        >>> data = tf.<group>.<channel>.data
+        >>> fig, ax = plt.subplots()
+        >>> x, y = data.to_xy()
+        >>> ax.plot(x, y)
+        [<matplotlib.lines.Line2D object at ...>]
+        >>> plt.show()
 
-    LabVIEW's waveform data type has three required attributes: t0, dt, and Y.
-    Additional attributes can be set and are included in the returned WaveformDT.
-    WaveformDT provides a convenience function to_xy() that facilitates plotting
-    data in matplotlib. For example:
-
-    >>> import matplotlib as plt
-    >>> from nitdms import TdmsFile
-    >>> tf = TdmsFile(<file>)
-    >>> data = tf.<group>.<channel>.data
-    >>> fig, ax = plt.subplots()
-    >>> x, y = data.to_xy()
-    >>> ax.plot(x, y)
-    [<matplotlib.lines.Line2D object at ...>]
-    >>> plt.show()
-
-    The x-axis array will be relative time by default. For absolute time, set the
-    relative parameter to False.
+    Note:
+        The x-axis array will be relative time by default. For absolute time, set the
+        relative parameter to False.
     """
 
     def __new__(cls, Y, dt, t0):
@@ -42,8 +41,8 @@ class WaveformDT(np.ndarray):
     # pylint: disable=attribute-defined-outside-init
     # pylint: disable=invalid-name
     def __array_finalize__(self, obj):
-        self.t0 = getattr(obj, "t0", 0.0)
-        self.dt = getattr(obj, "dt", 1.0)
+        self._t0 = getattr(obj, "t0", 0.0)
+        self._dt = getattr(obj, "dt", 1.0)
 
     def __repr__(self):
         t0 = self.t0 if isinstance(self.t0, Number) else 0.0
@@ -67,8 +66,26 @@ class WaveformDT(np.ndarray):
 
     @property
     def Y(self):
-        """Return data array"""
+        """ndarray: data array"""
         return self.view(np.ndarray)
+
+    @property
+    def dt(self):
+        """float: waveform increment"""
+        return self._dt
+
+    @dt.setter
+    def dt(self, value):
+        self._dt = value
+
+    @property
+    def t0(self):
+        """datetime or float: waveform start time"""
+        return self._t0
+
+    @t0.setter
+    def t0(self, value):
+        self._t0 = value
 
     def set_attributes(self, **kwargs):
         """Set waveform attributes"""
@@ -82,7 +99,7 @@ class WaveformDT(np.ndarray):
             relative (bool): y is relative time if True, absolute if False
 
         Returns:
-            (tuple): x, y arrays
+            tuple: x, y arrays
         """
         y = self.view(np.ndarray)
         y = y.flatten()
@@ -145,7 +162,7 @@ class WaveformDT(np.ndarray):
             n (int): number of samples to return
 
         Returns:
-            (WaveformDT): first n samples
+            WaveformDT: first n samples
         """
         return self[:n]
 
@@ -156,7 +173,7 @@ class WaveformDT(np.ndarray):
             n (int): number of samples to return
 
         Returns:
-            (WaveformDT): last n samples
+            WaveformDT: last n samples
         """
         start_offset = self.t0 if isinstance(self.t0, Number) else 0.0
         start_offset += getattr(self, "wf_start_offset", 0.0)

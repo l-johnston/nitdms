@@ -34,50 +34,15 @@ class TdmsFile(TdmsObject):
     objects and properties are dynamically instantiated as attributes allowing easy
     access from within an interactive session with tab completion such as Jupyter.
 
-    Example:
-    >>>from nitdms import TdmsFile
-    >>>tf = Tdms(<file>)
-    >>>data = tf.<group>.<channel>.data
-    >>>sample_period = tf.<group>.<channel>.wf_increment
-    >>>
-    where <group>, <channel>, data, etc. are attributes of the tf instance.
-
-    It's possible to view the file hierarchy:
-    >>>from nitdms import TdmsFile
-    >>>tf = Tdms(<file>)
-    >>>print(tf)
-    file_name
-        <property>
-        <group>
-            <property>
-            <channel>
-                <property>
-                data
-    >>>
-
-    LabVIEW doesn't impose any constraints on the names of groups, channels
-    or properties. But, Python's attributes must be valid indentifiers - generally
-    ASCII letters, numbers (except first character) and underscore. So, TdmsFile also
-    supports item access like a dict. For example, suppose a group name in the file
-    is '1group' and has channel '1channel'. Both names are invalid identifiers and
-    will generate a syntax error when using dot access.
-    The usage pattern in this case is:
-    >>>from nitdms import TdmsFile
-    >>>tf = TdmsFile(<file>)
-    >>>print(tf)
-    file_name
-        1group
-            1channel
-    >>>group = tf['1group']
-    >>>channel = group['1channel']
-    >>>data = channel.data
-    >>>
-
-    Args:
+    Attributes:
         file (str): TDMS file to read
 
-    Returns:
-        TdmsFile instance
+    Example:
+        >>> from nitdms import TdmsFile
+        >>> tf = TdmsFile(<file>)
+        >>> data = tf.<group>.<channel>.data
+        >>> data
+        array([...])
     """
 
     # pylint: disable=protected-access
@@ -382,7 +347,7 @@ class TdmsFile(TdmsObject):
 
     @property
     def info(self):
-        """File information dict"""
+        """dict: names of all the groups, channels and properties in the file"""
         return self._info
 
     def __str__(self):
