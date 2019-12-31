@@ -75,14 +75,21 @@ facilitates plotting data in matplotlib. For example:
   >>> import matplotlib.pyplot as plt
   >>> from nitdms import TdmsFile
   >>> tf = TdmsFile(<file>)
-  >>> data = tf.<group>.<channel>.data
-  >>> data.t0
+  >>> waveform = tf.<group>.<channel>.data
+  >>> waveform.t0
   datetime.datetime(...)
-  >>> data.dt
+  >>> waveform.dt
   <value>
-  >>> x, y = data.to_xy()
-  >>> fig, ax = plt.subplots()
-  >>> ax.plot(x, y)
+  >>> x, y = waveform.to_xy()
+  >>> plt.plot(x, y)
+  >>> plt.show()
+
+WaveformDT also supports item access and Matplotlib's labeled data interface:
+  >>> import matplotlib.pyplot as plt
+  >>> from nitdms import TdmsFile
+  >>> tf = TdmsFile(<file>)
+  >>> waveform = tf.<group>.<channel>.data
+  >>> plt.plot('x', 'y', 'r-', data=waveform)
   >>> plt.show()
 
 If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
@@ -94,10 +101,10 @@ package.
 >>> from nitdms import TdmsFile
 >>> from unit_system.predefined_units import *
 >>> tf = TdmsFile(<file>)
->>> data = tf.<group>.<channel>.data
->>> data.unit_string
+>>> waveform = tf.<group>.<channel>.data
+>>> waveform.unit_string
 'Volts'
->>> x, y = data.to_xy()
+>>> x, y = waveform.to_xy()
 >>> x = x*s
 >>> y = y*V
 >>> plt.plot(x, y)

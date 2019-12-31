@@ -1,7 +1,6 @@
 """Test returning data as WaveformDT"""
 from datetime import datetime, timezone
 import numpy as np
-import matplotlib.pyplot as plt
 from nitdms import TdmsFile, WaveformDT
 
 # pylint: disable=missing-docstring
