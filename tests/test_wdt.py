@@ -1,6 +1,7 @@
 """Test returning data as WaveformDT"""
 from datetime import datetime, timezone
 import numpy as np
+import matplotlib.pyplot as plt
 from nitdms import TdmsFile, WaveformDT
 
 # pylint: disable=missing-docstring
@@ -151,3 +152,13 @@ def test_tail():
         "Length: 5\nt0: 0\ndt:  1.0000e+00"
     )
     assert wf_tail.__repr__() == expected
+
+
+def test_xy_item_access():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    x = wf["x"]
+    results = x == np.asarray([0.0, 1.0, 2.0])
+    assert results.all()
+    y = wf["y"]
+    results = y == np.asarray([1, 2, 3])
+    assert results.all()

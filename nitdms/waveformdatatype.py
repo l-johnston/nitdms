@@ -8,8 +8,8 @@ class WaveformDT(np.ndarray):
 
     LabVIEW's waveform data type has three required attributes: t0, dt, and Y.
     Additional attributes can be set and are included in the returned WaveformDT.
-    WaveformDT provides a convenience function to_xy() that facilitates plotting
-    data in matplotlib.
+    WaveformDT has the function to_xy() that will generate the x-axis array from the
+    t0, dt and number of samples in the Y array.
 
     Attributes:
         Y (array-like): data
@@ -17,15 +17,20 @@ class WaveformDT(np.ndarray):
         t0 (float or datetime): wf_start_time
 
     Example:
-        >>> import matplotlib as plt
-        >>> from nitdms import TdmsFile
-        >>> tf = TdmsFile(<file>)
-        >>> data = tf.<group>.<channel>.data
-        >>> fig, ax = plt.subplots()
+        >>> waveform = WaveformDT([1,2,3], 1, 0)
         >>> x, y = data.to_xy()
-        >>> ax.plot(x, y)
-        [<matplotlib.lines.Line2D object at ...>]
+        >>> x
+        array([0., 1., 2.])
+        >>> y
+        array([1, 2, 3])
+
+    WaveformDT supports Matplotlib and its labeled data interface:
+        >>> import matplotlib.pyplot as plt
+        >>> waveform = WaveformDT([1,2,3], 1, 0)
+        >>> plt.plot('x', 'y', 'r-', data=waveform)
+        [<matplotlib.lines.Line2D object ... >]
         >>> plt.show()
+        >>>
 
     Note:
         The x-axis array will be relative time by default. For absolute time, set the
@@ -181,3 +186,10 @@ class WaveformDT(np.ndarray):
         wf = self[-n:]
         setattr(wf, "wf_start_offset", start_offset)
         return wf
+
+    def __getitem__(self, key):
+        if key in ["y", "Y"]:
+            return self.Y
+        if key in ["x", "X"]:
+            return self.to_xy()[0]
+        return super().__getitem__(key)
