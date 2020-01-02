@@ -25,12 +25,12 @@ class WaveformDT(np.ndarray):
         array([1, 2, 3])
 
     WaveformDT supports Matplotlib and its labeled data interface:
+
         >>> import matplotlib.pyplot as plt
         >>> waveform = WaveformDT([1,2,3], 1, 0)
         >>> plt.plot('x', 'y', 'r-', data=waveform)
         [<matplotlib.lines.Line2D object ... >]
         >>> plt.show()
-        >>>
 
     Note:
         The x-axis array will be relative time by default. For absolute time, set the
