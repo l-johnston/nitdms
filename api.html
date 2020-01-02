@@ -31,57 +31,9 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-nitdms.common">
-<span id="api"></span><h1>API<a class="headerlink" href="#module-nitdms.common" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-nitdms.reader">
+<span id="api"></span><h1>API<a class="headerlink" href="#module-nitdms.reader" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="nitdms.common.TdmsObject">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">TdmsObject</code><a class="headerlink" href="#nitdms.common.TdmsObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Base class for the three TDMS object types: File, Group and Channel</p>
-<p>TdmsObject is a container whose elements are attributes that are dynamically
-instantiated during discovery of the tdms file metadata. The class, and derivatives,
-support both attribute dot access and dict-like item access.
-The container is immutable and supports iteration through the attributes.</p>
-<p>TdmsObject is not intended to be instantiated in application code.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="nitdms.common.Group">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Group</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Group object for group properties and channel objects</p>
-<p>Not intended to be instantiated in application code.</p>
-<dl class="method">
-<dt id="nitdms.common.Group.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tree view of this group’s channels and properties</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="nitdms.common.Channel">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Channel</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Channel object for channel properties and data</p>
-<p>Not intended to be instantiated in application code.</p>
-<dl class="method">
-<dt id="nitdms.common.Channel.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel.__str__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Tree view of this channel’s properties and data</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="nitdms.common.Channel.data">
-<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#nitdms.common.Channel.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>the channel data</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>ndarray or <a class="reference internal" href="#nitdms.waveformdatatype.WaveformDT" title="nitdms.waveformdatatype.WaveformDT">WaveformDT</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<span class="target" id="module-nitdms.reader"></span><dl class="class">
 <dt id="nitdms.reader.TdmsFile">
 <em class="property">class </em><code class="sig-prename descclassname">nitdms.reader.</code><code class="sig-name descname">TdmsFile</code><span class="sig-paren">(</span><em class="sig-param">file</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>TDMS file object containing all groups, channels, properties and data</p>
@@ -108,6 +60,12 @@ access from within an interactive session with tab completion such as Jupyter.</
 <span class="go">array([...])</span>
 </pre></div>
 </div>
+<dl class="method">
+<dt id="nitdms.reader.TdmsFile.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree view of the groups, channels and properties</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="nitdms.reader.TdmsFile.info">
 <em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#nitdms.reader.TdmsFile.info" title="Permalink to this definition">¶</a></dt>
@@ -171,17 +129,14 @@ t0, dt and number of samples in the Y array.</p>
 <span class="go">array([1, 2, 3])</span>
 </pre></div>
 </div>
-<dl>
-<dt>WaveformDT supports Matplotlib and its labeled data interface:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<p>WaveformDT supports Matplotlib and its labeled data interface:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">waveform</span> <span class="o">=</span> <span class="n">WaveformDT</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">waveform</span><span class="p">)</span>
 <span class="go">[&lt;matplotlib.lines.Line2D object ... &gt;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-<span class="go">&gt;&gt;&gt;</span>
 </pre></div>
 </div>
-</dd>
-</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The x-axis array will be relative time by default. For absolute time, set the
@@ -273,6 +228,54 @@ relative parameter to False.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-nitdms.common"></span><dl class="class">
+<dt id="nitdms.common.TdmsObject">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">TdmsObject</code><a class="headerlink" href="#nitdms.common.TdmsObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for the three TDMS object types: File, Group and Channel</p>
+<p>TdmsObject is a container whose elements are attributes that are dynamically
+instantiated during discovery of the tdms file metadata. The class, and derivatives,
+support both attribute dot access and dict-like item access.
+The container is immutable and supports iteration through the attributes.</p>
+<p>TdmsObject is not intended to be instantiated in application code.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="nitdms.common.Group">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Group</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Group object for group properties and channel objects</p>
+<p>Not intended to be instantiated in application code.</p>
+<dl class="method">
+<dt id="nitdms.common.Group.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree view of this group’s channels and properties</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="nitdms.common.Channel">
+<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Channel</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Channel object for channel properties and data</p>
+<p>Not intended to be instantiated in application code.</p>
+<dl class="method">
+<dt id="nitdms.common.Channel.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree view of this channel’s properties and data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="nitdms.common.Channel.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#nitdms.common.Channel.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>the channel data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray or <a class="reference internal" href="#nitdms.waveformdatatype.WaveformDT" title="nitdms.waveformdatatype.WaveformDT">WaveformDT</a></p>
 </dd>
 </dl>
 </dd></dl>

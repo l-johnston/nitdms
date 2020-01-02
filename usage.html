@@ -34,6 +34,8 @@
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="basic">
+<h2>Basic<a class="headerlink" href="#basic" title="Permalink to this headline">¶</a></h2>
 <p>One of the challenges in working with TDMS files is finding the properties and
 channel data in a file that you didn’t create. In LabVIEW code, this can be a
 frustrating experience - <code class="docutils literal notranslate"><span class="pre">nitdms</span></code> to the rescue! At an interactive prompt, just use
@@ -74,8 +76,12 @@ will generate a syntax error when using dot access.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">data</span>
 </pre></div>
 </div>
-<p>Want a Pandas DataFrame? For example, suppose the tdms file contains a group ‘group_0’
-with two channels ‘ch_0’ and ‘ch_1’ with equal length.</p>
+</div>
+<div class="section" id="pandas">
+<h2>Pandas<a class="headerlink" href="#pandas" title="Permalink to this headline">¶</a></h2>
+<p>Want a Pandas DataFrame? For example, suppose the TDMS file contains a group ‘group_0’
+with two channels ‘ch_0’ and ‘ch_1’ with equal length. This example also illustrates
+the iteration feature of TdmsFile.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
@@ -91,16 +97,19 @@ with two channels ‘ch_0’ and ‘ch_1’ with equal length.</p>
 <span class="go">9     9     19</span>
 </pre></div>
 </div>
-<p>So, why doesn’t TdmsFile just return a DataFrame? The contents of the tdms file are
+<p>So, why doesn’t TdmsFile just return a DataFrame? The contents of the TDMS file are
 arbitrary and have no general, direct mapping to a DataFrame. For example, the
 tdms file channel data is interpreted by the properties, but the DataFrame columns,
 which are Pandas Series objects, don’t support metadata. In some situations a DataFrame
 is appropriate, but in general it isn’t.</p>
+</div>
+<div class="section" id="waveformdt-and-matplotlib">
+<h2>WaveformDT and Matplotlib<a class="headerlink" href="#waveformdt-and-matplotlib" title="Permalink to this headline">¶</a></h2>
 <p>If the channel data in the TDMS file originated from LabVIEW’s waveform data type,
-the returned data will be a WaveformDT that is a subclass of numpy ndarray. This
+the returned data will be a WaveformDT that is a subclass of Numpy’s ndarray. This
 mimics the waveform data type in LabVIEW. In addition to all of the attributes
 such as t0 and dt, WaveformDT provides a convenience function to_xy() that
-facilitates plotting data in matplotlib. For example:</p>
+facilitates plotting data in Matplotlib. For example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
@@ -114,8 +123,8 @@ facilitates plotting data in matplotlib. For example:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<dl>
-<dt>WaveformDT also supports item access and Matplotlib’s labeled data interface:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<p>WaveformDT also supports item access and Matplotlib’s labeled data interface:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">tf</span> <span class="o">=</span> <span class="n">TdmsFile</span><span class="p">(</span><span class="o">&lt;</span><span class="n">file</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">waveform</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.&lt;</span><span class="n">group</span><span class="o">&gt;.&lt;</span><span class="n">channel</span><span class="o">&gt;.</span><span class="n">data</span>
@@ -123,8 +132,9 @@ facilitates plotting data in matplotlib. For example:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-</dd>
-</dl>
+</div>
+<div class="section" id="waveformdt-and-unit-system">
+<h2>WaveformDT and unit_system<a class="headerlink" href="#waveformdt-and-unit-system" title="Permalink to this headline">¶</a></h2>
 <p>If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
 have the attribute <cite>unit_string</cite> indicating the measurement unit. You can make the
 data unit-aware using the <a class="reference external" href="https://github.com/l-johnston/unit_system">unit_system</a>
@@ -142,6 +152,7 @@ package.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
+</div>
 </div>
 </div>
 
@@ -173,7 +184,13 @@ package.</p>
 <h3>Navigation</h3>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic">Basic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pandas">Pandas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#waveformdt-and-matplotlib">WaveformDT and Matplotlib</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#waveformdt-and-unit-system">WaveformDT and unit_system</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 </ul>

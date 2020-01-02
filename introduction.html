@@ -47,6 +47,10 @@ channel objects can contain data such as acquisition waveforms.</p>
       <span class="n">data</span>
 </pre></div>
 </div>
+<p>The main export of nitdms is TdmsFile which is a container whose elements are attributes
+that are dynamically instantiated during discovery of the TDMS file metadata.
+The class supports both attribute dot access and dict-like item access.
+The container is immutable and supports iteration through the attributes.</p>
 </div>
 
 
