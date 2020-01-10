@@ -1,6 +1,7 @@
 """LabVIEW's waveform data type in python"""
 from numbers import Number
 import numpy as np
+from unit_system import Quantity
 
 
 class WaveformDT(np.ndarray):
@@ -32,6 +33,18 @@ class WaveformDT(np.ndarray):
         [<matplotlib.lines.Line2D object ... >]
         >>> plt.show()
 
+    It is possible to set units from the unit_system package:
+
+        >>> waveform.xunit = "s"
+        >>> waveform.yunit = "m"
+        >>> plt.plot(*waveform.to_xy())
+
+    It is also possible to build a waveform from unit_system quantities:
+
+        >>> from unit_system.predefined_units import m, s
+        >>> waveform = WaveformDT([1,2,3]*m, 1*s, 0)
+        >>> plt.plot(*waveform.to_xy())
+
     Note:
         The x-axis array will be relative time by default. For absolute time, set the
         relative parameter to False.
@@ -39,15 +52,21 @@ class WaveformDT(np.ndarray):
 
     def __new__(cls, Y, dt, t0):
         obj = np.asarray(Y).view(cls)
-        obj.t0 = t0
-        obj.dt = dt
+        obj._t0 = t0
+        obj._dt = dt
+        if isinstance(Y, Quantity):
+            obj._yunit = Y.unit
+        if isinstance(dt, Quantity):
+            obj._xunit = dt.unit
         return obj
 
     # pylint: disable=attribute-defined-outside-init
     # pylint: disable=invalid-name
     def __array_finalize__(self, obj):
-        self._t0 = getattr(obj, "t0", 0.0)
-        self._dt = getattr(obj, "dt", 1.0)
+        self._t0 = getattr(obj, "t0", None)
+        self._dt = getattr(obj, "dt", None)
+        self._yunit = getattr(obj, "_yunit", None)
+        self._xunit = getattr(obj, "_xunit", None)
 
     def __repr__(self):
         t0 = self.t0 if isinstance(self.t0, Number) else 0.0
@@ -71,13 +90,40 @@ class WaveformDT(np.ndarray):
 
     @property
     def Y(self):
-        """ndarray: data array"""
-        return self.view(np.ndarray)
+        """ndarray or Quantity: data array"""
+        if self._yunit is None:
+            y = self.view(np.ndarray)
+        else:
+            y = self.view(Quantity)
+            y.unit = self._yunit
+        return y
+
+    @property
+    def yunit(self):
+        """unit (str): Y unit"""
+        return self._yunit
+
+    @yunit.setter
+    def yunit(self, unit):
+        self._yunit = unit
+
+    @property
+    def xunit(self):
+        """unit (str): x-axis unit"""
+        return self._xunit
+
+    @xunit.setter
+    def xunit(self, unit):
+        self._xunit = unit
 
     @property
     def dt(self):
-        """float: waveform increment"""
-        return self._dt
+        """float or Quantity: waveform increment"""
+        if self._xunit is None or isinstance(self._dt, Quantity):
+            dt = self._dt
+        else:
+            dt = Quantity(self._dt, self._xunit)
+        return dt
 
     @dt.setter
     def dt(self, value):
@@ -106,13 +152,17 @@ class WaveformDT(np.ndarray):
         Returns:
             tuple: x, y arrays
         """
-        y = self.view(np.ndarray)
+        y = self.Y
         y = y.flatten()
         dt = self.dt
         t0 = self.t0
+        t0_offset = getattr(self, "wf_start_offset", 0.0)
+        if isinstance(dt, Quantity):
+            t0_offset = Quantity(t0_offset, dt.unit)
         samples = y.size
         if relative:
             t0 = t0 if isinstance(t0, Number) else 0.0
+            t0 = t0 + t0_offset
             x = np.linspace(t0, t0 + samples * dt, samples, False)
         else:
             t0 = np.datetime64(t0.astimezone().replace(tzinfo=None))
@@ -186,6 +236,11 @@ class WaveformDT(np.ndarray):
         wf = self[-n:]
         setattr(wf, "wf_start_offset", start_offset)
         return wf
+
+    def __dir__(self):
+        inst_attr = list(filter(lambda k: not k.startswith("_"), self.__dict__.keys()))
+        cls_attr = list(filter(lambda k: not k.startswith("_"), dir(self.__class__)))
+        return inst_attr + cls_attr
 
     def __getitem__(self, key):
         if key in ["y", "Y"]:

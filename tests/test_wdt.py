@@ -1,6 +1,7 @@
 """Test returning data as WaveformDT"""
 from datetime import datetime, timezone
 import numpy as np
+from unit_system import Quantity
 from nitdms import TdmsFile, WaveformDT
 
 # pylint: disable=missing-docstring
@@ -161,3 +162,54 @@ def test_xy_item_access():
     y = wf["y"]
     results = y == np.asarray([1, 2, 3])
     assert results.all()
+
+
+def test_wdt_from_quantity():
+    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
+    y = wf.Y
+    results = y == Quantity([1, 2, 3], "m")
+    assert results.all()
+    assert wf.dt == Quantity(1, "s")
+
+
+def test_wdt_to_quantity():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    wf.yunit = "m"
+    wf.xunit = "s"
+    y = wf.Y
+    results = y == Quantity([1, 2, 3], "m")
+    assert results.all()
+    assert wf.dt == Quantity(1, "s")
+
+
+def test_change_dt():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    wf.dt = 2
+    assert wf.dt == 2
+
+
+def test_change_t0():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    wf.t0 = 1
+    assert wf.t0 == 1
+
+
+def test_get_units():
+    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
+    assert wf.yunit == "m"
+    assert wf.xunit == "s"
+
+
+def test_toxy_with_units():
+    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
+    x, y = wf.to_xy()
+    results = x == Quantity([0.0, 1.0, 2.0], "s")
+    assert results.all()
+    results = y == Quantity([1.0, 2.0, 3.0], "m")
+    assert results.all()
+
+
+def test_dir():
+    wf = WaveformDT([1, 2, 3], 1, 0)
+    attrs = set(dir(wf))
+    assert set(["Y", "dt", "t0", "xunit", "yunit"]).issubset(attrs)

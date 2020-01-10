@@ -38,5 +38,5 @@ setup(
         "Natural Language :: English",
     ],
     url="https://github.com/l-johnston/nitdms",
-    install_requires=["numpy"],
+    install_requires=["numpy", "unit_system"],
 )
