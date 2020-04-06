@@ -38,5 +38,5 @@ setup(
         "Natural Language :: English",
     ],
     url="https://github.com/l-johnston/nitdms",
-    install_requires=["numpy", "unyt"],
+    install_requires=["numpy", "matplotlib", "unyt"],
 )
