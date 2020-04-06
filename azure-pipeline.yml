@@ -49,6 +49,10 @@ jobs:
     vmImage: 'ubuntu-latest'
   timeoutInMinutes: 10
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
@@ -87,6 +91,10 @@ jobs:
     vmImage: 'windows-latest'
   timeoutInMinutes: 10
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
@@ -130,6 +138,7 @@ jobs:
   timeoutInMinutes: 10
   steps:
   - checkout: self
+    submodules: true
     persistCredentials: true
   
   - task: UsePythonVersion@0
@@ -183,6 +192,10 @@ jobs:
         python.version: '3.7'
   timeoutInMinutes: 10
   steps:
+  - checkout: self
+    submodules: true
+    persistCredentials: true
+
   - task: UsePythonVersion@0
     inputs:
       versionSpec: '$(python.version)'
