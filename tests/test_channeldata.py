@@ -150,10 +150,9 @@ def test_channeldata_digitalwfm():
     tf = TdmsFile("./tests/tdms_files/channeldata_digitalwfm.tdms")
     data = tf.group_0.ch_0.data
     assert isinstance(data, WaveformDT)
-    assert isinstance(data[0], (np.int32, np.int64))
     assert data.size == 10
     expected = np.asarray([0, 2, 3, 4, 5, 6, 7, 8, 9, 16])
-    results = data == expected
+    results = data.Y == expected
     assert results.all()
 
 
@@ -161,10 +160,9 @@ def test_channeldata_digitalwfmstates():
     tf = TdmsFile("./tests/tdms_files/channeldata_digitalwfmstates.tdms")
     data = tf.group_0.ch_0.data
     assert isinstance(data, WaveformDT)
-    assert isinstance(data[0], (np.int32, np.int64))
     assert data.size == 8
     expected = np.asarray(list(range(8)))
-    results = data == expected
+    results = data.Y == expected
     assert results.all()
 
 

@@ -1,7 +1,7 @@
 """Test returning data as WaveformDT"""
 from datetime import datetime, timezone
 import numpy as np
-from unit_system import Quantity
+from unyt import unyt_array, s, m  # pylint: disable=no-name-in-module
 from nitdms import TdmsFile, WaveformDT
 
 # pylint: disable=missing-docstring
@@ -20,14 +20,14 @@ def test_analog():
 def test_analog_multiplewrites():
     tf = TdmsFile("./tests/tdms_files/wdt_analog_multiplewrites.tdms")
     wf = tf.group_0.ch0.data
-    assert wf.shape == (2, 100)
+    assert wf.Y.shape == (2, 100)
 
 
 def test_daqmx_linear_voltage():
     tf = TdmsFile("./tests/tdms_files/daqmx_linear_voltage.tdms")
     wf = tf.group_0.cDAQ1Mod2_ai0.data
     assert wf.dt == 0.001
-    assert wf.shape == (10,)
+    assert wf.Y.shape == (10,)
 
 
 def test_toxy_relative():
@@ -75,17 +75,17 @@ def test_repr():
     wf = WaveformDT(range(60), 1, 0)
     expected = (
         " 0.0000e+00\t 0.0000e+00\n"
-        " 1.0000e+00\t 1.0000e+00\n"
-        " 2.0000e+00\t 2.0000e+00\n"
-        " 3.0000e+00\t 3.0000e+00\n"
-        " 4.0000e+00\t 4.0000e+00\n"
-        " ...\n"
-        " 5.5000e+01\t 5.5000e+01\n"
-        " 5.6000e+01\t 5.6000e+01\n"
-        " 5.7000e+01\t 5.7000e+01\n"
-        " 5.8000e+01\t 5.8000e+01\n"
-        " 5.9000e+01\t 5.9000e+01\n"
-        "Length: 60\nt0: 0\ndt:  1.0000e+00"
+        + " 1.0000e+00\t 1.0000e+00\n"
+        + " 2.0000e+00\t 2.0000e+00\n"
+        + " 3.0000e+00\t 3.0000e+00\n"
+        + " 4.0000e+00\t 4.0000e+00\n"
+        + " ...\n"
+        + " 5.5000e+01\t 5.5000e+01\n"
+        + " 5.6000e+01\t 5.6000e+01\n"
+        + " 5.7000e+01\t 5.7000e+01\n"
+        + " 5.8000e+01\t 5.8000e+01\n"
+        + " 5.9000e+01\t 5.9000e+01\n"
+        + "Length: 60\nt0: 0\ndt:  1.0000e+00"
     )
     assert wf.__repr__() == expected
 
@@ -98,13 +98,13 @@ def test_Y():
 
 def test_ufunc():
     wf = WaveformDT([1, 2, 3], 1, 0)
-    assert wf.min() == 1.0
+    x = wf.min
+    assert x == 1
 
 
 def test_ufunc_multiply():
     wf = WaveformDT([1, 2, 3], 1, 0)
-    results = 2 * wf == np.asarray([2.0, 4.0, 6.0])
-    assert results.all()
+    assert (np.asarray(2 * wf) == np.asarray([2, 4, 6])).all()
 
 
 def test_ufunc_multiplyat():
@@ -122,8 +122,7 @@ def test_ufunc_out():
     results = b == np.asarray([2.0, 4.0, 6.0])
     assert results.all()
     np.multiply(a, 2.0, out=c)
-    results = c == WaveformDT([2.0, 4.0, 6.0], 2, 1)
-    assert results.all()
+    assert c == WaveformDT([2.0, 4.0, 6.0], 2, 1)
 
 
 def test_head():
@@ -164,22 +163,22 @@ def test_xy_item_access():
     assert results.all()
 
 
-def test_wdt_from_quantity():
-    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
+def test_wdt_from_unyt():
+    wf = WaveformDT(unyt_array([1, 2, 3], "m"), unyt_array(1, "s"), 0)
     y = wf.Y
-    results = y == Quantity([1, 2, 3], "m")
+    results = y == unyt_array([1, 2, 3], "m")
     assert results.all()
-    assert wf.dt == Quantity(1, "s")
+    assert wf.dt == unyt_array(1, "s")
 
 
-def test_wdt_to_quantity():
+def test_wdt_to_unyt():
     wf = WaveformDT([1, 2, 3], 1, 0)
     wf.yunit = "m"
     wf.xunit = "s"
     y = wf.Y
-    results = y == Quantity([1, 2, 3], "m")
+    results = y == unyt_array([1, 2, 3], "m")
     assert results.all()
-    assert wf.dt == Quantity(1, "s")
+    assert wf.dt == unyt_array(1, "s")
 
 
 def test_change_dt():
@@ -195,17 +194,17 @@ def test_change_t0():
 
 
 def test_get_units():
-    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
-    assert wf.yunit == "m"
-    assert wf.xunit == "s"
+    wf = WaveformDT(unyt_array([1, 2, 3], "m"), unyt_array(1, "s"), 0)
+    assert wf.yunit == m
+    assert wf.xunit == s
 
 
 def test_toxy_with_units():
-    wf = WaveformDT(Quantity([1, 2, 3], "m"), Quantity(1, "s"), 0)
+    wf = WaveformDT(unyt_array([1, 2, 3], "m"), unyt_array(1, "s"), 0)
     x, y = wf.to_xy()
-    results = x == Quantity([0.0, 1.0, 2.0], "s")
+    results = x == unyt_array([0.0, 1.0, 2.0], "s")
     assert results.all()
-    results = y == Quantity([1.0, 2.0, 3.0], "m")
+    results = y == unyt_array([1.0, 2.0, 3.0], "m")
     assert results.all()
 
 

@@ -77,7 +77,8 @@ WaveformDT and Matplotlib
 -------------------------
 
 If the channel data in the TDMS file originated from LabVIEW's waveform data type,
-the returned data will be a WaveformDT that is a subclass of Numpy's ndarray. This
+the returned data will be a WaveformDT that uses Numpy's `dispatch mechanism
+<https://docs.scipy.org/doc/numpy/user/basics.dispatch.html#basics-dispatch>`_. This
 mimics the waveform data type in LabVIEW. In addition to all of the attributes
 such as t0 and dt, WaveformDT provides a convenience function to_xy() that
 facilitates plotting data in Matplotlib. For example:
@@ -103,12 +104,12 @@ WaveformDT also supports item access and Matplotlib's labeled data interface:
   >>> plt.plot('x', 'y', 'r-', data=waveform)
   >>> plt.show()
 
-WaveformDT and unit_system
+WaveformDT and unyt
 --------------------------
 
 If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
 have the attribute `unit_string` indicating the measurement unit. You can make the
-data unit-aware using the `unit_system <https://github.com/l-johnston/unit_system>`_
+data unit-aware using the `unyt <https://github.com/yt-project/unyt>`_
 package.
 
 >>> import matplotlib.pyplot as plt

@@ -11,7 +11,7 @@ from collections import namedtuple
 import numpy as np
 from nitdms.exceptions import DAQmxScaleTypeError
 from nitdms.daqmx_scalers import rtdscale
-from nitdms.waveformdatatype import WaveformDT
+from waveformDT.waveform import WaveformDT
 
 LeadIn = namedtuple("LeadIn", ["toc", "segment_len", "metadata_len"])
 Segment = namedtuple(
