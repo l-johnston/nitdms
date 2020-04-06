@@ -7,11 +7,11 @@
     <title>Usage &#8212; nitdms  documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Example" href="example.html" />
@@ -106,7 +106,7 @@ is appropriate, but in general it isn’t.</p>
 <div class="section" id="waveformdt-and-matplotlib">
 <h2>WaveformDT and Matplotlib<a class="headerlink" href="#waveformdt-and-matplotlib" title="Permalink to this headline">¶</a></h2>
 <p>If the channel data in the TDMS file originated from LabVIEW’s waveform data type,
-the returned data will be a WaveformDT that is a subclass of Numpy’s ndarray. This
+the returned data will be a WaveformDT that uses Numpy’s <a class="reference external" href="https://docs.scipy.org/doc/numpy/user/basics.dispatch.html#basics-dispatch">dispatch mechanism</a>. This
 mimics the waveform data type in LabVIEW. In addition to all of the attributes
 such as t0 and dt, WaveformDT provides a convenience function to_xy() that
 facilitates plotting data in Matplotlib. For example:</p>
@@ -133,11 +133,11 @@ facilitates plotting data in Matplotlib. For example:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="waveformdt-and-unit-system">
-<h2>WaveformDT and unit_system<a class="headerlink" href="#waveformdt-and-unit-system" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="waveformdt-and-unyt">
+<h2>WaveformDT and unyt<a class="headerlink" href="#waveformdt-and-unyt" title="Permalink to this headline">¶</a></h2>
 <p>If the channel data orginated from a DAQmx acquisition, the WaveformDT object will
 have the attribute <cite>unit_string</cite> indicating the measurement unit. You can make the
-data unit-aware using the <a class="reference external" href="https://github.com/l-johnston/unit_system">unit_system</a>
+data unit-aware using the <a class="reference external" href="https://github.com/yt-project/unyt">unyt</a>
 package.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">nitdms</span> <span class="kn">import</span> <span class="n">TdmsFile</span>
@@ -188,7 +188,7 @@ package.</p>
 <li class="toctree-l2"><a class="reference internal" href="#basic">Basic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pandas">Pandas</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#waveformdt-and-matplotlib">WaveformDT and Matplotlib</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#waveformdt-and-unit-system">WaveformDT and unit_system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#waveformdt-and-unyt">WaveformDT and unyt</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example</a></li>
@@ -213,7 +213,7 @@ package.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -230,7 +230,7 @@ package.</p>
       &copy;2019, Lee Johnston.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

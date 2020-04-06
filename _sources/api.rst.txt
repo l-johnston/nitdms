@@ -6,7 +6,7 @@ API
     :members:
     :special-members: __str__
 
-.. py:module:: nitdms.waveformdatatype
+.. py:module:: waveformDT.waveform
 .. autoclass:: WaveformDT
     :members:
 
