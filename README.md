@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms?branchName=master)](https://dev.azure.com/l-johnston/nitdms/_build/latest?definitionId=7&branchName=master) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/7) ![PyPI version](https://img.shields.io/pypi/v/nitdms)
+[![Build Status](https://dev.azure.com/l-johnston/nitdms/_apis/build/status/l-johnston.nitdms?branchName=master)](https://img.shields.io/azure-devops/build/l-johnston/nitdms/14) ![Azure DevOps coverage](https://img.shields.io/azure-devops/coverage/l-johnston/nitdms/14) ![PyPI version](https://img.shields.io/pypi/v/nitdms)
 # `nitdms` - A pythonic TDMS file reader
 
 The main export from the `nitdms` package is the TdmsFile class. Upon instantiation,
