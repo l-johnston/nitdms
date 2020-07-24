@@ -57,7 +57,7 @@ the iteration feature of TdmsFile.
   >>> from nitdms import TdmsFile
   >>> tf = TdmsFile(<file>)
   >>> group = tf.group_0
-  >>> data = dict(zip([ch for ch in group], [group[ch].data for ch in group]))
+  >>> data = dict(zip(group.channels, [ch.data for ch in group]))
   >>> df = pd.DataFrame(data)
   >>> df
     ch_0   ch_1
