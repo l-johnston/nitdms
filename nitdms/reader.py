@@ -48,6 +48,7 @@ class TdmsFile(TdmsObject):
     # pylint: disable=protected-access
     def __init__(self, file):
         self._file = Path(file)
+        self._name = self._file.stem
         if not self._file.is_file():
             raise FileNotFoundError(f"'{self._file}' does not exist or is not a file")
         self._buffer = None
@@ -66,12 +67,12 @@ class TdmsFile(TdmsObject):
     def __iter__(self):
         groups = [gr for gr in self.__dict__ if isinstance(self[gr], Group)]
         for group in groups:
-            yield group
+            yield self[group]
 
     def __repr__(self):
         attributes = [key for key in self.__dict__ if not key.startswith("_")]
         attr_str = ", ".join(attributes)
-        repr_str = f"<TDMS_File: {attr_str}>"
+        repr_str = f"<TDMS_File {self._name}: {attr_str}>"
         if len(repr_str) > 50:
             midpt = len(repr_str) // 2
             repr_str = repr_str[0 : midpt - 1] + " ... " + repr_str[midpt + 2 :]
@@ -166,7 +167,7 @@ class TdmsFile(TdmsObject):
                         pass
                     elif index_type in [0x00001269, 0x00001369]:
                         self._ptr += 8
-                        chunk = self._unpack(TdsDataType.U64, byte_order)
+                        self._unpack(TdsDataType.U64, byte_order)
                         fcs_vector_size = self._unpack(TdsDataType.U32, byte_order)
                         self._ptr += fcs_vector_size * 20
                         rdw_vector_size = self._unpack(TdsDataType.U32, byte_order)
@@ -365,3 +366,13 @@ class TdmsFile(TdmsObject):
                     lines.append(f"            {cp}")
                 lines.append("            data")
         return "\n".join(lines)
+
+    @property
+    def groups(self):
+        """Groups in file"""
+        return [grp._name for grp in self]
+
+    @property
+    def name(self):
+        """File name"""
+        return self._name

@@ -169,7 +169,7 @@ def test_channeldata_digitalwfmstates():
 def test_channeldata_digitalwfmpattern():
     tf = TdmsFile("./tests/tdms_files/channeldata_digitalwfmpattern.tdms")
     group = tf.group_0
-    data = [group[ch].data for ch in group]
+    data = [ch.data for ch in group]
     data.reverse()
     data = list(zip(*data))
     values = []

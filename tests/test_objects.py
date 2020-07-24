@@ -69,7 +69,7 @@ def test_len():
 def test_iter():
     results = set()
     for group in TF:
-        results.add(group)
+        results.add(group.name)
     assert results == set(["group_0"])
 
 

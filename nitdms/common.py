@@ -145,6 +145,10 @@ class TdmsObject:
         attributes = [key for key in self.__dict__ if not key.startswith("_")]
         return len(attributes)
 
+    def __dir__(self):
+        attrs = super().__dir__()
+        return list(filter(lambda s: not s.startswith("_"), attrs))
+
     @staticmethod
     def _convert_timestamp(timestamp):
         """Convert LabVIEW's timestamp to datetime
@@ -161,7 +165,7 @@ class TdmsObject:
 
 class Group(TdmsObject):
     """Group object for group properties and channel objects
-    
+
     Not intended to be instantiated in application code.
     """
 
@@ -169,14 +173,13 @@ class Group(TdmsObject):
         self._name = name
 
     def __iter__(self):
-        channels = [ch for ch in self.__dict__ if isinstance(self[ch], Channel)]
-        for ch in channels:
-            yield ch
+        for ch in self.channels:
+            yield self[ch]
 
     def __repr__(self):
         attributes = [key for key in self.__dict__ if not key.startswith("_")]
         attr_str = ", ".join(attributes)
-        repr_str = f"<TDMS_Group: {attr_str}>"
+        repr_str = f"<TDMS_Group {self._name}: {attr_str}>"
         if len(repr_str) > 50:
             midpt = len(repr_str) // 2
             repr_str = repr_str[0 : midpt - 1] + " ... " + repr_str[midpt + 2 :]
@@ -197,6 +200,16 @@ class Group(TdmsObject):
         for ch in channels:
             lines.append(f"    {ch}")
         return "\n".join(lines)
+
+    @property
+    def channels(self):
+        """Channel names in group"""
+        return [ch for ch in self.__dict__ if isinstance(self[ch], Channel)]
+
+    @property
+    def name(self):
+        """Group name"""
+        return self._name
 
 
 class Channel(TdmsObject):
@@ -383,7 +396,7 @@ class Channel(TdmsObject):
     def __repr__(self):
         attributes = [key for key in self.__dict__ if not key.startswith("_")]
         attr_str = ", ".join(attributes)
-        repr_str = f"<TDMS_Channel: {attr_str}>"
+        repr_str = f"<TDMS_Channel {self._name}: {attr_str}>"
         if len(repr_str) > 60:
             midpt = len(repr_str) // 2
             repr_str = repr_str[0 : midpt - 1] + " ... " + repr_str[midpt + 2 :]
