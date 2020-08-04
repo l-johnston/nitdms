@@ -389,7 +389,7 @@ class Channel(TdmsObject):
                     values = struct.unpack(fmt, buf)
                     data.extend(values)
         data = np.asarray(data)
-        if uniform and data.size > n_values:
+        if uniform and data.size > n_values > 1:
             data = data.reshape(-1, n_values)
         return data
 
@@ -410,3 +410,8 @@ class Channel(TdmsObject):
             lines.append(f"    {cp}")
         lines.append("    data")
         return "\n".join(lines)
+
+    @property
+    def name(self):
+        """Return name of channel"""
+        return self._name
