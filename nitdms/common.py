@@ -3,6 +3,7 @@
 TDMS File Format Internal Structure
 http://www.ni.com/product-documentation/5696/en/
 """
+import re
 import math
 import struct
 from datetime import datetime, timedelta, timezone
@@ -87,6 +88,8 @@ STRUCT_FORMAT = {
     TdsDataType.DAQmxRawData: (4, "i"),
 }
 
+VALIDIDENTIFIER = "^[a-zA-Z][a-zA-Z0-9_]*$"
+
 
 class TdmsObject:
     """Base class for the three TDMS object types: File, Group and Channel
@@ -146,8 +149,13 @@ class TdmsObject:
         return len(attributes)
 
     def __dir__(self):
-        attrs = super().__dir__()
-        return list(filter(lambda s: not s.startswith("_"), attrs))
+        attrs = []
+        for attr in filter(lambda s: not s.startswith("_"), super().__dir__()):
+            if re.match(VALIDIDENTIFIER, attr) is not None:
+                attrs.append(attr)
+            else:
+                attrs.append(f'["{attr}"]')
+        return attrs
 
     @staticmethod
     def _convert_timestamp(timestamp):
