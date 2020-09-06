@@ -128,3 +128,8 @@ def test_str():
         + "            ch_prop_0\n            data"
     )
     assert tf_str == expected
+
+
+def test_dir_invalid_name():
+    tf = TdmsFile("./tests/tdms_files/invalid attributes names.tdms")
+    assert '["file-prop 0"]' in dir(tf)
