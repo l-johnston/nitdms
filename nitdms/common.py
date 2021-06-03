@@ -280,7 +280,10 @@ class Channel(TdmsObject):
                     )
             elif segment.interleaved:
                 dtype_size, dtype_fmt = segment.rd_szfmt
-                decimation = segment.raw_size // (dtype_size * segment.count)
+                if segment.count == 1:
+                    decimation = segment.offsets
+                else:
+                    decimation = segment.raw_size // (dtype_size * segment.count)
                 ch = (segment.ch_start - segment.raw_start) // dtype_size
                 n = segment.raw_size // dtype_size
                 raw_start = segment.raw_start

@@ -8,3 +8,4 @@ nitdms.egg-info/
 .coverage
 htmlcov/
 doc/_build
+venv/
