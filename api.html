@@ -4,15 +4,15 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
     <title>API &#8212; nitdms  documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Example" href="example.html" />
@@ -32,19 +32,19 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-nitdms.reader">
+  <section id="module-nitdms.reader">
 <span id="api"></span><h1>API<a class="headerlink" href="#module-nitdms.reader" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="nitdms.reader.TdmsFile">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.reader.</code><code class="sig-name descname">TdmsFile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">nitdms.reader.</span></span><span class="sig-name descname"><span class="pre">TdmsFile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile" title="Permalink to this definition">¶</a></dt>
 <dd><p>TDMS file object containing all groups, channels, properties and data</p>
 <p>Upon instantiation, the class loads the TDMS file into memory and discovers
 all of the file, group and channel objects and respective properties. These
 objects and properties are dynamically instantiated as attributes allowing easy
 access from within an interactive session with tab completion such as Jupyter.</p>
 <dl class="py attribute">
-<dt id="nitdms.reader.TdmsFile.file">
-<code class="sig-name descname">file</code><a class="headerlink" href="#nitdms.reader.TdmsFile.file" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile.file">
+<span class="sig-name descname"><span class="pre">file</span></span><a class="headerlink" href="#nitdms.reader.TdmsFile.file" title="Permalink to this definition">¶</a></dt>
 <dd><p>TDMS file to read</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -62,20 +62,20 @@ access from within an interactive session with tab completion such as Jupyter.</
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="nitdms.reader.TdmsFile.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile.__str__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.reader.TdmsFile.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tree view of the groups, channels and properties</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="nitdms.reader.TdmsFile.groups">
-<em class="property">property </em><code class="sig-name descname">groups</code><a class="headerlink" href="#nitdms.reader.TdmsFile.groups" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile.groups">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#nitdms.reader.TdmsFile.groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Groups in file</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="nitdms.reader.TdmsFile.info">
-<em class="property">property </em><code class="sig-name descname">info</code><a class="headerlink" href="#nitdms.reader.TdmsFile.info" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile.info">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">info</span></span><a class="headerlink" href="#nitdms.reader.TdmsFile.info" title="Permalink to this definition">¶</a></dt>
 <dd><p>names of all the groups, channels and properties in the file</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -84,25 +84,25 @@ access from within an interactive session with tab completion such as Jupyter.</
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="nitdms.reader.TdmsFile.name">
-<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#nitdms.reader.TdmsFile.name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="nitdms.reader.TdmsFile.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#nitdms.reader.TdmsFile.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>File name</p>
 </dd></dl>
 
 </dd></dl>
 
 <span class="target" id="module-waveformDT.waveform"></span><dl class="py class">
-<dt id="waveformDT.waveform.WaveformDT">
-<em class="property">class </em><code class="sig-prename descclassname">waveformDT.waveform.</code><code class="sig-name descname">WaveformDT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Y</span></em>, <em class="sig-param"><span class="n">dt</span></em>, <em class="sig-param"><span class="n">t0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">waveformDT.waveform.</span></span><span class="sig-name descname"><span class="pre">WaveformDT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Python implementation of LabVIEW’s waveform data type</p>
 <p>LabVIEW’s waveform data type has three required attributes: t0, dt, and Y.
 Additional attributes can be set and are included in the returned WaveformDT.
 WaveformDT has the function to_xy() that will generate the x-axis array from the
 t0, dt and number of samples in the Y array.</p>
 <dl class="py attribute">
-<dt id="waveformDT.waveform.WaveformDT.Y">
-<code class="sig-name descname">Y</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.Y" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.Y">
+<span class="sig-name descname"><span class="pre">Y</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.Y" title="Permalink to this definition">¶</a></dt>
 <dd><p>data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -112,8 +112,8 @@ t0, dt and number of samples in the Y array.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="waveformDT.waveform.WaveformDT.dt">
-<code class="sig-name descname">dt</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.dt" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.dt">
+<span class="sig-name descname"><span class="pre">dt</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.dt" title="Permalink to this definition">¶</a></dt>
 <dd><p>wf_increment</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -123,8 +123,8 @@ t0, dt and number of samples in the Y array.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt id="waveformDT.waveform.WaveformDT.t0">
-<code class="sig-name descname">t0</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.t0" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.t0">
+<span class="sig-name descname"><span class="pre">t0</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.t0" title="Permalink to this definition">¶</a></dt>
 <dd><p>wf_start_time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -167,8 +167,8 @@ support is provided by the Unyt library.</p>
 relative parameter to False.</p>
 </div>
 <dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.head">
-<code class="sig-name descname">head</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.head" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.head">
+<span class="sig-name descname"><span class="pre">head</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.head" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first n samples of the waveform</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -183,9 +183,9 @@ relative parameter to False.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.max">
-<em class="property">property </em><code class="sig-name descname">max</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.max" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.max">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">max</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.max" title="Permalink to this definition">¶</a></dt>
 <dd><p>maximum value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -194,9 +194,9 @@ relative parameter to False.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.min">
-<em class="property">property </em><code class="sig-name descname">min</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.min" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.min">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">min</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.min" title="Permalink to this definition">¶</a></dt>
 <dd><p>minimum value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -206,20 +206,20 @@ relative parameter to False.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.set_attributes">
-<code class="sig-name descname">set_attributes</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.set_attributes" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.set_attributes">
+<span class="sig-name descname"><span class="pre">set_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.set_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set waveform attributes</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.size">
-<em class="property">property </em><code class="sig-name descname">size</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.size" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.size">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the number of elements in Y</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.std">
-<em class="property">property </em><code class="sig-name descname">std</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.std" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.std">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">std</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.std" title="Permalink to this definition">¶</a></dt>
 <dd><p>standard deviation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -229,8 +229,8 @@ relative parameter to False.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.tail">
-<code class="sig-name descname">tail</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n</span><span class="o">=</span><span class="default_value">5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.tail" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.tail">
+<span class="sig-name descname"><span class="pre">tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.tail" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the last n samples of the waveform</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -246,8 +246,8 @@ relative parameter to False.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.to_xy">
-<code class="sig-name descname">to_xy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">relative</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">inunits</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.to_xy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.to_xy">
+<span class="sig-name descname"><span class="pre">to_xy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">relative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inunits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.to_xy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the (x, y) tuple</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -265,9 +265,9 @@ relative parameter to False.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.xunit">
-<em class="property">property </em><code class="sig-name descname">xunit</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.xunit" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.xunit">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">xunit</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.xunit" title="Permalink to this definition">¶</a></dt>
 <dd><p>X-axis unit, based on dt</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -276,9 +276,9 @@ relative parameter to False.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="waveformDT.waveform.WaveformDT.yunit">
-<em class="property">property </em><code class="sig-name descname">yunit</code><a class="headerlink" href="#waveformDT.waveform.WaveformDT.yunit" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="waveformDT.waveform.WaveformDT.yunit">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">yunit</span></span><a class="headerlink" href="#waveformDT.waveform.WaveformDT.yunit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Y-axis unit</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -290,8 +290,8 @@ relative parameter to False.</p>
 </dd></dl>
 
 <span class="target" id="module-nitdms.common"></span><dl class="py class">
-<dt id="nitdms.common.TdmsObject">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">TdmsObject</code><a class="headerlink" href="#nitdms.common.TdmsObject" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.common.TdmsObject">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">nitdms.common.</span></span><span class="sig-name descname"><span class="pre">TdmsObject</span></span><a class="headerlink" href="#nitdms.common.TdmsObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base class for the three TDMS object types: File, Group and Channel</p>
 <p>TdmsObject is a container whose elements are attributes that are dynamically
 instantiated during discovery of the tdms file metadata. The class, and derivatives,
@@ -301,32 +301,32 @@ The container is immutable and supports iteration through the attributes.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="nitdms.common.Group">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Group</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.common.Group">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">nitdms.common.</span></span><span class="sig-name descname"><span class="pre">Group</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Group object for group properties and channel objects</p>
 <p>Not intended to be instantiated in application code.</p>
 <dl class="py method">
-<dt id="nitdms.common.Group.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group.__str__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.common.Group.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Group.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tree view of this group’s channels and properties</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt id="nitdms.common.Channel">
-<em class="property">class </em><code class="sig-prename descclassname">nitdms.common.</code><code class="sig-name descname">Channel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.common.Channel">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">nitdms.common.</span></span><span class="sig-name descname"><span class="pre">Channel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Channel object for channel properties and data</p>
 <p>Not intended to be instantiated in application code.</p>
 <dl class="py method">
-<dt id="nitdms.common.Channel.__str__">
-<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel.__str__" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="nitdms.common.Channel.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#nitdms.common.Channel.__str__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tree view of this channel’s properties and data</p>
 </dd></dl>
 
-<dl class="py method">
-<dt id="nitdms.common.Channel.data">
-<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#nitdms.common.Channel.data" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="nitdms.common.Channel.data">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#nitdms.common.Channel.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>the channel data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -335,15 +335,15 @@ The container is immutable and supports iteration through the attributes.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="nitdms.common.Channel.name">
-<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#nitdms.common.Channel.name" title="Permalink to this definition">¶</a></dt>
+<dl class="py property">
+<dt class="sig sig-object py" id="nitdms.common.Channel.name">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#nitdms.common.Channel.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return name of channel</p>
 </dd></dl>
 
 </dd></dl>
 
-</div>
+</section>
 
 
           </div>
@@ -412,7 +412,7 @@ The container is immutable and supports iteration through the attributes.</p>
       &copy;2019, Lee Johnston.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
