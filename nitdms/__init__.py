@@ -7,14 +7,13 @@ from nitdms.version import __version__
 
 # use tdms.dll if 64-bit Python, Windows
 try:
-    path = getenv("PROGRAMFILES")
-except KeyError:
-    path = None  # pylint: disable=invalid-name
-else:
-    path = Path(path) / "National Instruments/Shared/TDMS/tdms.dll"
-if path.exists() and maxsize > 2 ** 32:
-    from nitdms.tdsapi import TdmsFile
-else:
+    path = Path(getenv("PROGRAMFILES"))
+except TypeError:
     from nitdms.reader import TdmsFile
+else:
+    if path.exists() and maxsize > 2 ** 32:
+        from nitdms.tdsapi import TdmsFile
+    else:
+        from nitdms.reader import TdmsFile
 
 __all__ = ["TdmsFile", "WaveformDT"]
