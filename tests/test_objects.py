@@ -1,6 +1,6 @@
 """Test TDMS objects and properties"""
 from pytest import raises
-from nitdms import TdmsFile
+from nitdms.reader import TdmsFile
 from nitdms.common import TdmsObject, Group, Channel
 
 # pylint: disable=missing-docstring

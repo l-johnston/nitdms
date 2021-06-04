@@ -110,7 +110,7 @@ class TdmsObject:
         try:
             value = self.__dict__[name]
         except KeyError:
-            raise AttributeError(f"{name} not in {self.__repr__()}")
+            raise AttributeError(f"{name} not in {self.__repr__()}") from None
         else:
             return value
 
