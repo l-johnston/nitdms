@@ -185,8 +185,8 @@ jobs:
   - Update_Documentation
   condition: and(succeeded(), eq(variables['Build.Reason'], 'IndividualCI'))
   variables:
-    major: 1
-    minor: 5
+    major: 2
+    minor: 0
     micro: $[counter(variables['minor'], 0)]
   pool:
     vmImage: 'ubuntu-latest'

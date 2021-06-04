@@ -11,7 +11,7 @@ try:
 except TypeError:
     from nitdms.reader import TdmsFile
 else:
-    path.joinpath("National Instruments/Shared/TDMS/tdms.dll")
+    path = path.joinpath("National Instruments/Shared/TDMS/tdms.dll")
     if path.exists() and maxsize > 2 ** 32:
         from nitdms.tdsapi import TdmsFile
     else:
