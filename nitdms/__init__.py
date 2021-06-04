@@ -5,12 +5,16 @@ from pathlib import Path
 from waveformDT.waveform import WaveformDT
 from nitdms.version import __version__
 
-# use tdms.dll if 64-bit Python, Windows
+# use tdms.dll if 64-bit Python, Windows and installed
+DLLPATH = str(
+    Path(getenv("PROGRAMFILES")) / "National Instruments/Shared/TDMS/tdms.dll"
+)
 try:
     path = Path(getenv("PROGRAMFILES"))
 except TypeError:
     from nitdms.reader import TdmsFile
 else:
+    path.joinpath("National Instruments/Shared/TDMS/tdms.dll")
     if path.exists() and maxsize > 2 ** 32:
         from nitdms.tdsapi import TdmsFile
     else:
