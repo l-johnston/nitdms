@@ -6,9 +6,6 @@ from waveformDT.waveform import WaveformDT
 from nitdms.version import __version__
 
 # use tdms.dll if 64-bit Python, Windows and installed
-DLLPATH = str(
-    Path(getenv("PROGRAMFILES")) / "National Instruments/Shared/TDMS/tdms.dll"
-)
 try:
     path = Path(getenv("PROGRAMFILES"))
 except TypeError:
