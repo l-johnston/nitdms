@@ -241,3 +241,9 @@ def test_channeldata_continued_interleaved():
         expected.extend([i * 10 + j for j in range(9, -1, -1)])
     results = ch_1_values == np.asarray(expected)
     assert results.all()
+
+
+def test_logfile():
+    tf = TdmsFile("./tests/tdms_files/log.tdms")
+    data = tf.run0.temperature.data
+    assert len(data) == 13
