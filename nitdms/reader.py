@@ -99,7 +99,7 @@ class TdmsFile(TdmsObject):
         try:
             size, fmt = STRUCT_FORMAT[dtype]
         except KeyError:
-            raise DataTypeNotSupportedError(f"{TdsDataType(dtype)}")
+            raise DataTypeNotSupportedError(f"{TdsDataType(dtype)}") from None
         if dtype == TdsDataType.String:
             size = struct.unpack(byte_order + "I", buffer[ptr : ptr + 4])[0]
             ptr += 4
@@ -241,7 +241,9 @@ class TdmsFile(TdmsObject):
                         try:
                             dtype_size, _ = STRUCT_FORMAT[TdsDataType(dtype)]
                         except KeyError:
-                            raise DataTypeNotSupportedError(f"{TdsDataType(dtype)}")
+                            raise DataTypeNotSupportedError(
+                                f"{TdsDataType(dtype)}"
+                            ) from None
                         dim = self._unpack(TdsDataType.U32, byte_order)
                         if dim != 1:
                             raise InvalidDimensionError

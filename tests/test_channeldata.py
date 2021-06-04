@@ -1,7 +1,8 @@
 """Test channel data"""
 from datetime import datetime, timezone
 import numpy as np
-from nitdms import TdmsFile, WaveformDT
+from nitdms.reader import TdmsFile
+from nitdms import WaveformDT
 
 # pylint: disable=missing-docstring
 # pylint: disable=pointless-statement

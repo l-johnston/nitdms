@@ -5,6 +5,7 @@ build/
 dist/
 nitdms.egg-info/
 .venv/
+venv/
 .coverage
 htmlcov/
 doc/_build

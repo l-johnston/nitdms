@@ -1,6 +1,6 @@
 """Test exceptions"""
 from pytest import raises
-from nitdms import TdmsFile
+from nitdms.reader import TdmsFile
 from nitdms.exceptions import (
     InvalidTDMSFileError,
     InvalidTDMSVersionError,

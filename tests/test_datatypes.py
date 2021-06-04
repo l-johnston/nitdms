@@ -1,6 +1,6 @@
 """test data type decoding"""
 from datetime import datetime, timezone
-from nitdms import TdmsFile
+from nitdms.reader import TdmsFile
 
 # pylint: disable=missing-docstring
 # pylint: disable=pointless-statement
