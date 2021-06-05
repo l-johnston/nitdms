@@ -632,6 +632,7 @@ class TdmsFile(TdmsObject):
 
     def __init__(self, file, mode="open"):
         self._file = Path(file)
+        self._name = self._file.stem
         self._info = {
             "name": self._file.stem,
             "file_properties": {},
