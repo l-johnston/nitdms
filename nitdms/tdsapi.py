@@ -34,7 +34,7 @@ from enum import IntEnum
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 import numpy as np
-from nitdms.common import TdmsObject, Group
+from nitdms.common import TdmsObject
 
 DLLPATH = str(
     Path(getenv("PROGRAMFILES")) / "National Instruments/Shared/TDMS/tdms.dll"
@@ -604,6 +604,55 @@ class Channel(TdmsObject):
     @property
     def name(self):
         """Return name of channel"""
+        return self._name
+
+
+class Group(TdmsObject):
+    """Group object for group properties and channel objects
+
+    Not intended to be instantiated in application code.
+    """
+
+    def __init__(self, name):
+        self._name = name
+
+    def __iter__(self):
+        for ch in self.channels:
+            yield self[ch]
+
+    def __repr__(self):
+        attributes = [key for key in self.__dict__ if not key.startswith("_")]
+        attr_str = ", ".join(attributes)
+        repr_str = f"<TDMS_Group {self._name}: {attr_str}>"
+        if len(repr_str) > 50:
+            midpt = len(repr_str) // 2
+            repr_str = repr_str[0 : midpt - 1] + " ... " + repr_str[midpt + 2 :]
+        return repr_str
+
+    def __str__(self):
+        """Tree view of this group's channels and properties"""
+        properties = [
+            key for key in self.__dict__ if not isinstance(getattr(self, key), Channel)
+        ]
+        properties.remove("_name")
+        channels = [
+            key for key in self.__dict__ if isinstance(getattr(self, key), Channel)
+        ]
+        lines = [self._name]
+        for gp in properties:
+            lines.append(f"    {gp}")
+        for ch in channels:
+            lines.append(f"    {ch}")
+        return "\n".join(lines)
+
+    @property
+    def channels(self):
+        """Channel names in group"""
+        return [ch for ch in self.__dict__ if isinstance(self[ch], Channel)]
+
+    @property
+    def name(self):
+        """Group name"""
         return self._name
 
 
