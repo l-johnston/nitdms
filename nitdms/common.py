@@ -295,7 +295,7 @@ class Channel(TdmsObject):
                     dtss = []
                     for i in range(len(values) // 2):
                         frac, sec = values[2 * i : 2 * i + 2]
-                        ts = sec + frac / 2 ** 64
+                        ts = sec + frac / 2**64
                         dts = self._convert_timestamp(ts)
                         dtss.append(dts)
                     data.extend(dtss[ch::decimation])
@@ -359,7 +359,7 @@ class Channel(TdmsObject):
                         line = segment.offsets
                         line_values = []
                         for v in values:
-                            v = (v & 2 ** line) // 2 ** line
+                            v = (v & 2**line) // 2**line
                             line_values.append(v)
                         values = line_values
                     data.extend(values)
@@ -378,7 +378,7 @@ class Channel(TdmsObject):
                     values = struct.unpack(fmt, buf)
                     for i in range(len(values) // 2):
                         frac, sec = values[2 * i : 2 * i + 2]
-                        ts = sec + frac / 2 ** 64
+                        ts = sec + frac / 2**64
                         value = self._convert_timestamp(ts)
                         data.append(value)
                 elif segment.dtype == TdsDataType.ComplexSingleFloat:

@@ -39,7 +39,7 @@ def rtdscale(voltage, excitation, r0, a, b, c, r_lead, configuration, method):
                 loop += 1
             t = t1
         else:
-            num = math.sqrt(r0 * (r0 * a ** 2 - 4 * r0 * b + 4 * b * r))
+            num = math.sqrt(r0 * (r0 * a**2 - 4 * r0 * b + 4 * b * r))
             den = 2 * r0 * b
             t = num / den - a / (2 * b)
     # elif method == "Newton-Raphson":

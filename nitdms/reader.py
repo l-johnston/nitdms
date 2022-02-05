@@ -110,7 +110,7 @@ class TdmsFile(TdmsObject):
                 # LabVIEW chose to make 0.0 mean 0.0 s relative, not absolute time
                 value = 0.0
             else:
-                ts = sec + frac / 2 ** 64
+                ts = sec + frac / 2**64
                 value = self._convert_timestamp(ts)
         elif dtype in [TdsDataType.ComplexSingleFloat, TdsDataType.ComplexDoubleFloat]:
             re, im = struct.unpack(byte_order + fmt, buffer[ptr : ptr + size])
