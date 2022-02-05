@@ -36,7 +36,7 @@ jobs:
     displayName: 'Run pylint'
 
   - script: |
-      black --diff > code_qa/black_report.txt
+      black --diff nitdms > code_qa/black_report.txt
     displayName: 'Run black'
 
   - publish: $(System.DefaultWorkingDirectory)/code_qa
