@@ -41,8 +41,8 @@ DLLPATH = str(
     Path(getenv("PROGRAMFILES")) / "National Instruments/Shared/TDMS/tdms.dll"
 )
 TDMSDLL = cdll.LoadLibrary(DLLPATH)
-uInt32_MAX = 2 ** 32 - 1
-uInt64_MAX = 2 ** 64 - 1
+uInt32_MAX = 2**32 - 1
+uInt64_MAX = 2**64 - 1
 TDS_VERSION_2_0 = 4713
 
 
@@ -76,6 +76,7 @@ class tdsTime(Structure):
         seconds = self.sec + self.fraction / uInt64_MAX
         dt = datetime(1904, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=seconds)
         return dt.astimezone().replace(tzinfo=None)
+
     @property
     def value(self):
         """as_datetime()"""
@@ -561,7 +562,9 @@ def _getstrings(cnt, fileid, objid):
     """
     buffer = cast((c_char_p * cnt)(), POINTER(c_char_p))
     sizes = cast((c_uint32 * cnt)(), POINTER(c_uint32))
-    _getstrings.call(byref(buffer), byref(sizes), 0, byref(c_size_t(cnt)), fileid, objid, True)
+    _getstrings.call(
+        byref(buffer), byref(sizes), 0, byref(c_size_t(cnt)), fileid, objid, True
+    )
     strings = []
     for idx in range(cnt):
         strings.append(buffer[idx].decode())
